@@ -2,11 +2,10 @@ $(function() {
     $(window).load(function() {
         $('.load').delay(800).fadeOut(100);
         $('.kalada').delay(800).fadeIn(400);
+        // 获取设备高度
+        var clientH = document.documentElement.clientHeight;
+        $('.sub').css("height", clientH);
     });
-    // 获取设备高度
-    var clientH = document.documentElement.clientHeight;
-    console.log(clientH)
-    $('.sub').css("height", clientH);
 
     var res = '{"user":[{"id":"1","name":"L","password":"e10adc3949ba59abbe56e057f20f883e","state":true},{"id":"2","name":"ceshi","password":"c33367701511b4f6020ec61ded352059","state":false}]}';
     var shuzu = JSON.parse(res);
@@ -36,6 +35,9 @@ $(function() {
                         window.location.href = "http://localhost/control.html";
                     } else {
                         alert("验证失败");
+                        if (confirm("请问是否跳转到注册页面")) {
+                            window.location.href = "http://localhost/register.html";
+                        }
                     }
                 }
             });

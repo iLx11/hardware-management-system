@@ -19,8 +19,11 @@ public class test {
 
         userMapper userM = sqls.getMapper(userMapper.class);
 //        userM.changeUserStatus((byte) 1,"test6");
-        System.out.println(userM.selectAll());
-        userM.changeUser(4, (byte) 1,null,"test12234");
+//        System.out.println(userM.selectAll());
+//        userM.changeUser(4, (byte) 1,null,"test12234");
+//        System.out.println(userM.selectByName("l"));
+//        userM.addUser("123","dsfsd");
         sqls.close();
+
     }
 }

@@ -18,4 +18,8 @@ public interface userService {
     public void idSort();
 
     public void changeUser(int set, Byte status, String value, String name);
+
+    public UserShow selectByName(String name);
+
+    public void addUser(String name, String password);
 }

@@ -52,4 +52,17 @@ public class userServiceImp implements userService {
         userMapper.changeUser(set,status,value,name);
         sqlSession.close();
     }
+    public UserShow selectByName(String name) {
+        SqlSession sqlSession = factory.openSession(true);
+        userMapper userMapper = sqlSession.getMapper(userMapper.class);
+        UserShow user = userMapper.selectByName(name);
+        sqlSession.close();
+        return user;
+    }
+    public void addUser(String name, String password) {
+        SqlSession sqlSession = factory.openSession(true);
+        userMapper userMapper = sqlSession.getMapper(userMapper.class);
+        userMapper.addUser(name,password);
+        sqlSession.close();
+    }
 }
