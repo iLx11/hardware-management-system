@@ -1,0 +1,890 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a,
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+.constructor {
+    display: none;
+}
+
+/*页面加载开始*/
+.load {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 35em;
+}
+
+.loader {
+    --path: #2F3545;
+    --dot: #5628EE;
+    --duration: 1.5s;
+    width: 55px;
+    height: 55px;
+    align-items: center;
+    justify-items: center;
+    position: relative;
+}
+
+.loader:before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: absolute;
+    display: block;
+    background: var(--dot);
+    top: 37px;
+    left: 19px;
+    transform: translate(-18px, -18px);
+}
+
+.loader svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.loader svg polygon {
+    fill: none;
+    stroke: var(--path);
+    stroke-width: 10px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.loader svg polygon {
+    stroke-dasharray: 145 76 145 76;
+    stroke-dashoffset: 0;
+    animation: pathTriangle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+}
+
+.loader.triangle {
+    width: 48px;
+}
+
+.loader.triangle:before {
+    left: 21px;
+    transform: translate(-10px, -18px);
+    animation: dotTriangle var(--duration) cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite;
+}
+
+@keyframes pathTriangle {
+    33% {
+        stroke-dashoffset: 74;
+    }
+
+    66% {
+        stroke-dashoffset: 147;
+    }
+
+    100% {
+        stroke-dashoffset: 221;
+    }
+}
+
+@keyframes dotTriangle {
+    33% {
+        transform: translate(0, 0);
+    }
+
+    66% {
+        transform: translate(10px, -18px);
+    }
+
+    100% {
+        transform: translate(-10px, -18px);
+    }
+}
+
+/*页面加载结束*/
+/*-----------------------------------------------------------*/
+
+.backg {
+    /* background: url("../img/2.jpg") no-repeat;
+    background-size: cover;
+    background-position: center;*/
+    background: rgba(243, 246, 253, 1.0);
+    width: 100%;
+    height: 43em;
+    position: fixed;
+    top: 0px;
+    z-index: -2;
+}
+
+/*@media (min-width: 980px) {
+   
+}*/
+
+header {
+    height: 2em;
+    background: rgba(0, 139, 139, 0.3);
+    margin-bottom: 0.4em;
+}
+
+/*公用结构开始*/
+/*-----------------------------------------------------------*/
+.state {
+    display: inline-block;
+}
+
+.content {
+    width: 93%;
+    height: auto;
+    margin: 0 auto;
+
+}
+
+.C_t {
+    /*box-shadow: 0 0 0 2px darkgrey;*/
+    /*border: 1.7px solid rgba(211, 215, 212, 0.8);*/
+    box-shadow: 2px 6px 15px 1px rgba(211, 215, 212, 0.95);
+    border-radius: 15px;
+    padding: 0.5em;
+    margin-bottom: 0.9em;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.ct {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    position: relative;
+
+}
+
+.open {
+    width: 53%;
+    height: 96px;
+    box-shadow: 2px 6px 20px 5px rgba(211, 215, 212, 0.9);
+    border-radius: 13px;
+    position: relative;
+}
+
+.glass {
+    height: 100%;
+    width: 100%;
+    background: rgba(226, 225, 223, 0.1);
+    background-size: cover;
+    background-position: center;
+    position: absolute;
+    -webkit-filter: blur(24px);
+    filter: blur(24px);
+    overflow: hidden;
+    z-index: -1;
+}
+
+.situation {
+    width: 100%;
+    color: darkcyan;
+    position: absolute;
+    z-index: 5;
+}
+
+.analog {
+    width: 100%;
+    height: 30%;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    border-radius: 0 0 13px 13px;
+    background: rgba(161, 163, 166, 0.7);
+    z-index: 3;
+
+}
+
+.switch {
+    width: 45%;
+    height: 98px;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+    align-items: center;
+    color: rgba(0, 139, 139, 0.5);
+    text-align: center;
+    line-height: 43px;
+}
+
+.o_n {
+    width: 96%;
+    height: 45%;
+    border-radius: 7px 12px 7px 7px;
+    background-color: rgba(251, 229, 235, 0.9);
+    cursor: pointer;
+
+
+}
+
+.o_ff {
+    width: 96%;
+    height: 45%;
+    border-radius: 7px 7px 15px 7px;
+    background-color: rgba(231, 238, 238, 0.9);
+    /*background-image: linear-gradient(180deg, rgba(228, 200, 196, 0.7) 0%, rgba(181, 255, 252, 0.7) 100%);*/
+    cursor: pointer;
+
+}
+
+.bar {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    display: none;
+}
+
+.bar-input {
+    appearance: none;
+    width: 92%;
+    border-radius: 10px;
+    margin-top: 1em;
+    background-color: #A9C9FF;
+    background-image: linear-gradient(90deg, #A9C9FF 0%, #FFBBEC 100%);
+
+}
+
+.bar-input::fill-upper {
+
+    background: linear-gradient(to right, #1ab1e2 0%, #1ab1e2 80%, #eee 80%, #eee);
+
+}
+
+.ind {
+    width: 92%;
+}
+
+.indicator {
+    box-shadow: 0px 15px 35px rgba(236, 0, 113, 0.3);
+    background: #ec0071;
+    width: 6vh;
+    height: 6vh;
+    color: white;
+    -webkit-transform: translateY(9.6vh);
+    transform: translateY(9.6vh);
+    text-align: center;
+    font-size: 2vh;
+    font-weight: 900;
+    line-height: 8vh;
+    margin-left: 100%;
+    /*transform: translateY(15px);*/
+    transform: translate(-3vh, 15px);
+}
+
+.indicator:before {
+    content: "";
+    position: absolute;
+    background: #ec0071;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: -6px;
+    width: 4vh;
+    height: 4vh;
+    z-index: -1;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+/*公用结构结束*/
+/*-----------------------------------------------------------*/
+
+/*头部数据开始*/
+/*-----------------------------------------------------------*/
+
+.head_data {
+    width: 100%;
+    height: 230px;
+    box-shadow: 0 0 0 1.5px rgba(211, 215, 212, 1.0);
+    border-radius: 13px;
+    position: relative;
+}
+
+.head_situation {
+    width: 80%;
+    position: absolute;
+    text-align: center;
+    top: 0px;
+    left: 50%;
+    margin-left: -40%;
+    z-index: 5;
+    color: darkcyan;
+    box-shadow: 3px 4px 12px 3px rgba(111, 109, 133, 0.2);
+    border-radius: 0 0 15px 15px;
+    padding: 0.2em;
+}
+
+.content_data {
+    width: 100%;
+    height: 35%;
+    z-index: 1;
+    padding-left: 1em;
+    position: absolute;
+    flex-flow: row wrap;
+    justify-content: center;
+    bottom: 30%;
+    background-color: rgba(231, 238, 238, 0.9);
+
+}
+
+.content_data h3 {
+    margin: 0 auto;
+    width: 85%;
+    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+}
+
+.content_data p {
+    margin-left: -3em;
+    font-weight: 300;
+
+}
+
+#hum {
+    transform: translateX(2em);
+}
+
+#tem {
+    transform: translateX(2em);
+}
+
+.mqtt_connect {
+    width: 86%;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+
+}
+
+.mqtt_connect input {
+    width: 100%;
+    border: none;
+    height: 2.5em;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 2px darkgrey;
+    border-radius: 12px;
+    /*padding-left: 3em;*/
+    text-align: center;
+}
+
+.mqtt_connect label {
+    margin-right: 1em;
+    transform: translateY(-6px);
+}
+
+.headData {
+    width: 100%;
+    height: 40%;
+    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    /*align-content: space-around;*/
+    align-items: center;
+    z-index: 5;
+    bottom: 0px;
+    /*background-color: darkcyan;*/
+    /*display: none;*/
+}
+
+/*自动监测控制*/
+.auto_con {
+    width: 100%;
+    height: 30%;
+    position: absolute;
+    bottom: 0px;
+    padding-top: 0.3em;
+    z-index: 5;
+}
+
+.auto_c {
+    width: 85%;
+    height: 60%;
+    margin: 0 auto;
+    text-align: center;
+    box-shadow: 0 0 0 2px darkgrey;
+    border-radius: 12px;
+    line-height: 35px;
+}
+
+.auto_choose {
+    width: 100%;
+    height: 30%;
+}
+
+#auto_c_left {
+    display: inline-block;
+    width: 100px;
+    height: 5px;
+    background: darkcyan;
+    transform: translateY(0.1em);
+    cursor: pointer;
+    float: left;
+    margin-top: 0.6em;
+    margin-left: 2.5em;
+}
+
+#auto_c_right {
+    display: inline-block;
+    width: 100px;
+    height: 5px;
+    background: darksalmon;
+    transform: translateY(0.1em);
+    cursor: pointer;
+    float: right;
+    bottom: 0;
+    margin-top: 0.6em;
+    margin-right: 2.5em;
+
+}
+
+.auto_temp {
+    display: none;
+}
+
+.auto_wet {
+    display: none;
+}
+
+/*头部数据结束*/
+/*-----------------------------------------------------------*/
+
+
+
+/*控制灯光开始*/
+/*-----------------------------------------------------------*/
+.led_analog {
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+/*控制窗户开始*/
+/*-----------------------------------------------------------*/
+.wind_analog {
+    color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+/*简单控制开始*/
+/*-----------------------------------------------------------*/
+.con_open {
+    width: 100%;
+    height: 70px;
+    box-shadow: 2px 6px 15px 1px rgba(211, 215, 212, 0.9);
+    border-radius: 13px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.con_situation {
+    width: 50%;
+    position: absolute;
+    text-align: center;
+    top: 0px;
+    left: 50%;
+    margin-left: -25%;
+    z-index: 5;
+    color: darkcyan;
+    border: 1.5px solid rgba(211, 215, 212, 0.8);
+
+    box-shadow: 3px 4px 12px 3px rgba(111, 109, 133, 0.2);
+
+    border-radius: 0 0 15px 15px;
+    padding: 0.2em;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.con_o {
+    width: 49%;
+    height: 100%;
+    background-color: rgba(255, 222, 233, 0.2);
+    background-image: linear-gradient(0deg, rgba(255, 222, 233, 0.1) 0%, rgba(181, 208, 207, 0.3) 100%);
+
+    border-radius: 12px 7px 5px 12px;
+    clip-path: polygon(0% 0%, 50% 0%, 50% 50%, 100% 50%, 100% 100%, 0% 100%);
+    z-index: 2;
+    cursor: pointer;
+
+
+}
+
+.con_c {
+    width: 49%;
+    height: 100%;
+    background-color: rgba(255, 222, 233, 0.2);
+    background-image: linear-gradient(0deg, rgba(255, 222, 233, 0.1) 0%, rgba(181, 208, 207, 0.3) 100%);
+
+    border-radius: 5px 12px 12px 5px;
+    clip-path: polygon(0% 50%, 50% 50%, 50% 0%, 100% 0%, 100% 100%, 0% 100%);
+    text-align: right;
+    z-index: 2;
+    cursor: pointer;
+
+
+}
+
+.zhanwei {
+    width: 100%;
+    height: 70px;
+}
+
+/*底部导航开始*/
+/*-----------------------------------------------------------*/
+.bottom_nav {
+    position: fixed;
+    width: 94%;
+    height: 60px;
+    bottom: 0.8em;
+    left: 50%;
+    margin-left: -47%;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 5;
+    border-radius: 20px;
+    box-shadow: 3px 4px 12px 3px rgba(111, 109, 133, 0.2);
+    display: none;
+}
+
+.font {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 3px 4px 12px 3px rgba(111, 109, 133, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.move_cube {
+    width: 17%;
+    height: 85%;
+    position: absolute;
+    left: 4%;
+    /*left: 32%;*/
+    /*left: 57%;*/
+    /*left: 83%;*/
+    /*bottom: 7px;*/
+    z-index: -1;
+    border-radius: 12px;
+    background: rgba(242, 222, 221, 0.9);
+
+}
+
+.move_cube p {
+    font-size: 10px;
+    transform: translateY(-3px);
+}
+
+svg:active {
+    transform: scale(0.9);
+}
+
+/*mqtt_m开始*/
+/*-----------------------------------------------------------*/
+.kalada_m_m {
+    display: none;
+}
+
+.mqtt_trans {
+    width: 100%;
+    height: 13.5em;
+    position: relative;
+    /*box-shadow: 0 0 0 2px darkgrey;*/
+}
+
+.mqtt_t {
+    z-index: 5;
+    display: flex;
+    justify-content: space-around;
+    flex-flow: row wrap;
+}
+
+.mqtt_pub {
+    width: 64%;
+    height: 5em;
+    /*background: rgba(233, 194, 191, 1.8);*/
+    margin: 0 auto;
+
+}
+
+.mqtt_send {
+    width: 32%;
+    height: 5em;
+    background: rgba(233, 194, 191, 0.4);
+    border-radius: 10px;
+    text-align: center;
+    line-height: 5em;
+    box-shadow: 2px 6px 15px 1px rgba(211, 215, 212, 0.9);
+
+}
+
+.mqtt_send:active {
+    transform: scale(0.97);
+    box-shadow: 4px 4px 20px 3px rgba(111, 109, 133, 0.5);
+
+}
+
+.m_pub {
+    width: 97%;
+    border: none;
+    height: 2.7em;
+    background: rgba(0, 139, 139, 0.1);
+    box-shadow: 0 0 0 1.5px rgba(211, 215, 212, 1.0);
+    border-radius: 6px;
+    text-align: center;
+    /*line-height: 2.7em;*/
+    margin-bottom: 1em;
+}
+
+.mqtt_sub {
+    width: 100%;
+    height: 5em;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+
+}
+
+.mqtt_sub input {
+    width: 96%;
+    border: none;
+    height: 2.7em;
+    background-color: rgba(231, 238, 238, 0.9);
+    box-shadow: 0 0 0 1.5px rgba(211, 215, 212, 1.0);
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 1em
+}
+
+.mqtt_s_send {
+    width: 100%;
+    height: 4em;
+    display: flex;
+    justify-content: space-around;
+
+
+}
+
+.mqtt_s {
+    width: 45%;
+    height: 3em;
+    background: rgba(233, 194, 191, 0.4);
+    box-shadow: 2px 6px 15px 1px rgba(211, 215, 212, 0.9);
+    border-radius: 10px;
+    margin-top: 1em;
+    text-align: center;
+    line-height: 3em;
+    cursor: pointer;
+
+}
+
+.mqtt_s:active {
+    transform: scale(0.97);
+    box-shadow: 4px 4px 20px 3px rgba(111, 109, 133, 0.5);
+}
+
+.fenge {
+    width: 100%;
+    height: 2px;
+    background: rgba(233, 194, 191, 0.4);
+    margin-top: 1em;
+}
+
+.mqtt_mes {
+    width: 100%;
+    height: 15.5em;
+    background: rgba(211, 215, 212, 0.2);
+    margin-top: 0.6em;
+    border-radius: 0 0 7px 7px;
+    overflow: scroll;
+    font-size: 18px;
+}
+
+/*mana_c开始*/
+/*-----------------------------------------------------------*/
+.kalada_m_c {
+    display: none;
+}
+
+.user_data {
+    width: 100%;
+    height: 4em;
+    display: flex;
+    flex-flow: column;
+    wrap;
+    justify-content: flex-start;
+}
+
+.user_data h3,
+.user_data h5,
+p {
+    display: inline-block;
+}
+
+.user_data h3 {
+    padding-left: 1em;
+    margin-top: -3px;
+}
+
+p {
+    color: rgba(0, 139, 139, 1.9);
+    margin-right: 1em;
+}
+
+.mana_c {
+    width: 20%;
+    height: 100%;
+    position: absolute;
+    right: 2px;
+}
+
+/*user开始*/
+/*-----------------------------------------------------------*/
+.kalada_user {
+    display: none;
+}
+
+.change_user {
+    width: 100%;
+    height: 6em;
+    box-shadow: 0 0 0 2px rgba(0, 139, 139, 0.2);
+    /*background: rgba(0, 139, 139, 0.2);*/
+    text-align: center;
+    margin-top: 1em;
+    border-radius: 12px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-content: space-between;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.ch_n {
+    width: 100%;
+    font-size: 35px;
+    text-align: center;
+
+}
+
+.change_n {
+    width: 100%;
+    height: 46%;
+    background: rgba(0, 139, 139, 0.4);
+    box-shadow: -1px -1px 1px 0.5px white;
+    border-radius: 6px;
+    /*margin: 1em 0;*/
+    position: relative;
+}
+
+.change_n:active {
+    box-shadow: 1px 1px 1px 0.5px white;
+
+}
+.change_p {
+    width: 100%;
+    height: 46%;
+    background: rgba(0, 139, 139, 0.4);
+    box-shadow: 0.7px -0.7px 1px 0.5px white;
+    border-radius: 6px;
+}
+
+.change_p:active {
+    box-shadow: -1px 1px 1px 0.5px white;
+
+}
+
+.app_qb {
+    width: 60%;
+    /*height: 200px;*/
+    box-shadow: 0 0 0 2px darkgrey;
+    border-radius: 10px;
+    float: left;
+    background: url("../img/123.png")no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.message {
+    width: 36%;
+    height: 10em;
+    /*box-shadow: 0 0 0 2px darkgrey;*/
+    float: right;
+    color: rgba(0, 139, 139, 0.7);
+}
+
+.exit {
+    width: 100%;
+    height: 3em;
+    background: rgba(233, 194, 191, 0.6);
+    box-shadow: 4px 4px 20px 3px rgba(111, 109, 133, 0.3);
+    border-radius: 10px;
+    text-align: center;
+    line-height: 3em;
+    position: relative;
+    color: rgba(0, 0, 0, 0.8);
+
+
+}
+
+.exit:active {
+    transform: scale(1.05);
+}
+
+.exit::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    box-shadow: -0.7px -0.2px 0px 0.3px white;
+    position: absolute;
+    left: 0px;
+    border-radius: 10px;
+
+}
+
+#change_put {
+    width: 90%;
+    border: none;
+    height: 2.8em;
+    background: rgba(254, 238, 237, 1);
+    box-shadow: 0 0 1px 3px white;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 1em;
+    position: absolute;
+    top: 43%;
+    left: 45%;
+    margin-left: -40%;
+    z-index: 6;
+    display: none;
+    font-size: 16px;
+}
+
+.glass_cover {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+    background: rgba(116, 120, 124, 0.65);
+    filter: blur(20px);
+    z-index: 5;
+}

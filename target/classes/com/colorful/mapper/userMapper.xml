@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.colorful.mapper.userMapper">
+    <update id="changeUser">
+        update user_data
+        <set>
+                <if test="set == 1">
+                    name = #{value}
+                </if>
+                <if test="set == 2">
+                    password = #{value}
+                </if>
+                 <if test="set == 3">
+                    status = #{status}
+                </if>
+                 <if test="set == 4">
+                    mana = #{status}
+                </if>
+        </set>
+         where
+         name = #{name};
+    </update>
+
+    <delete id="deleteById">
+        delete from user_data where id = #{id};
+    </delete>
+
+    <select id="userVerify" resultType="com.colorful.pojo.User">
+        select * from user_data where name = #{name} and password = #{password};
+    </select>
+
+    <select id="selectAll" resultType="com.colorful.pojo.UserShow">
+        select id , name , status , mana from user_data;
+    </select>
+
+</mapper>
+

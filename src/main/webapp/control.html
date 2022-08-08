@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width = device-width,initial-scale = 1.0">
+    <title>控制页面</title>
+    <link rel="stylesheet" type="text/css" href="./css/control.css">
+</head>
+
+<body>
+    <!-- 页面加载效果 -->
+    <div class="load">
+        <div class="loader triangle">
+            <svg viewBox="0 0 86 80">
+                <polygon points="43 8 79 72 7 72"></polygon>
+            </svg>
+        </div>
+    </div>
+    <!-- 页面加载结束 -->
+    <section class="constructor">
+        <header>
+            iLx1
+        </header>
+        <!-- 背景 -->
+        <section class="backg"></section>
+        <!-- kalada_c开始 -->
+        <!------------------------------------------------------------>
+        <section class="kalada_c">
+            <!-- 数据显示开始 -->
+            <!------------------------------------------------------------>
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="head_data">
+                                <!-- <div class="glass"></div> -->
+                                <div class="head_situation">
+                                    <h1>Data<br>
+                                        <h4>success</h4>
+                                    </h1>
+                                </div>
+                                <div class="content_data">
+                                    <h3>weather : <p>Sun</p>
+                                    </h3>
+                                    <h3>temperature :<p id="tem">25</p>
+                                        <p>℃</p>
+                                    </h3>
+                                    <h3>humidity: <p id="hum">32</p>
+                                        <p>%RH</p>
+                                    </h3>
+                                </div>
+                                <div class="headData">
+                                    <div class="mqtt_connect">
+                                        <label>
+                                            <h3>MQTT</h3>
+                                            <h5> connect</h5>
+                                        </label>
+                                        <input type="text" name="" placeholder="mqtt server address" id="mqt">
+                                    </div>
+                                    <p id="mqtt_sit" style="font-size: 5px;">connected</p>
+                                </div>
+                                <!-- 调温设置 -->
+                                <div class="auto_con auto_temp">
+                                    <div class="auto_c">室内温度过高是否打开风扇</div>
+                                    <div class="auto_choose">
+                                        <div id="auto_c_left" class="temp_left"></div>
+                                        <div id="auto_c_right" class="temp_right"></div>
+                                    </div>
+                                </div>
+                                <!-- 调湿度设置 -->
+                                <div class="auto_con auto_wet">
+                                    <div class="auto_c">室内过于干燥是否开始加湿</div>
+                                    <div>
+                                        <div id="auto_c_left" class="wet_left"></div>
+                                        <div id="auto_c_right" class="wet_right"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 数据显示结束 -->
+            <!------------------------------------------------------------>
+            <!-- 控制灯光开始 -->
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct ab">
+                            <div class=" open led_open">
+                                <div class="glass"></div>
+                                <div class="situation led_situation">
+                                    <h1>Light:&nbsp;<div class="state">Close </div><br>
+                                        <h4>success</h4>
+                                    </h1>
+                                </div>
+                                <div class="analog led_analog">亮度调整</div>
+                            </div>
+                            <div class="switch led_switch">
+                                <div class="o_n led_on">
+                                    <h4>开灯</h4>
+                                </div>
+                                <div class="o_ff led_off">
+                                    <h4>关灯</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <section class="bar">
+                            <input class="bar-input analogInp" type="range" min="0" max="100" value="100">
+                            <div class="ind">
+                                <div class="indicator">100%</div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+            <!-- 控制灯光结束 -->
+            <!------------------------------------------------------------>
+            <!-- 控制窗户开始 -->
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="open led_open">
+                                <!-- <div class="glass"></div> -->
+                                <div class="situation wind_situation">
+                                    <h1>Window:&nbsp;<div class="state">Close </div><br>
+                                        <h4>success</h4>
+                                    </h1>
+                                </div>
+                                <div class="analog wind_analog">角度调整</div>
+                            </div>
+                            <div class="switch wind_switch">
+                                <div class="o_n wind_on">
+                                    <h4>开窗</h4>
+                                </div>
+                                <div class="o_ff wind_off">
+                                    <h4>关窗</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <section class="bar">
+                            <input class="bar-input analogInp" type="range" min="0" max="100" value="100">
+                            <div class="ind">
+                                <div class="indicator">100%</div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+            <!-- 控制窗户结束 -->
+            <!------------------------------------------------------------>
+            <!-- 控制门开始 -->
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="con_open">
+                                <!-- <div class="glass"></div> -->
+                                <div class="con_situation">
+                                    <h1>Door<br>
+                                        <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close</div>
+                                        </h4>
+                                    </h1>
+                                </div>
+                                <div class="con_o door_o">&nbsp;&nbsp;open</div>
+                                <div class="con_c door_c">close&nbsp;&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 控制门结束 -->
+            <!------------------------------------------------------------>
+            <!-- 控制风扇开始 -->
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="con_open">
+                                <!-- <div class="glass"></div> -->
+                                <div class="con_situation">
+                                    <h1>Fan<br>
+                                        <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close</div>
+                                        </h4>
+                                    </h1>
+                                </div>
+                                <div class="con_o fan_o">&nbsp;&nbsp;open</div>
+                                <div class="con_c fan_c">close&nbsp;&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 控制风扇结束 -->
+            <!------------------------------------------------------------>
+            <!-- 控制加湿开始 -->
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="con_open">
+                                <!-- <div class="glass"></div> -->
+                                <div class="con_situation">
+                                    <h1>Wet<br>
+                                        <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close</div>
+                                        </h4>
+                                    </h1>
+                                </div>
+                                <div class="con_o wet_o">&nbsp;&nbsp;open</div>
+                                <div class="con_c wet_c">close&nbsp;&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 控制加湿结束 -->
+            <!------------------------------------------------------------>
+            <!-- 控制窗帘开始 -->
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="con_open">
+                                <!-- <div class="glass"></div> -->
+                                <div class="con_situation">
+                                    <h1>Curtain<br>
+                                        <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close </div>
+                                        </h4>
+                                    </h1>
+                                </div>
+                                <div class="con_o curtain_o">&nbsp;&nbsp;open</div>
+                                <div class="con_c curtain_c">close&nbsp;&nbsp;</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 控制窗帘结束 -->
+            <!------------------------------------------------------------>
+            <!-- 占位开始 -->
+            <!------------------------------------------------------------>
+            <div class="content">
+                <div class="zhanwei">
+                </div>
+            </div>
+            <!-- 占位结束 -->
+            <!------------------------------------------------------------>
+        </section>
+        <!-- mqtt_m开始 -->
+        <!------------------------------------------------------------>
+        <section class="kalada_m_m">
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="mqtt_trans">
+                                <div class="glass"></div>
+                                <div class="mqtt_t">
+                                    <div class="mqtt_pub">
+                                        <input type="text" name="" class="m_pub" placeholder="pub_主题" id="pub_topic">
+                                        <input type="text" name="" class="m_pub" placeholder="pub_内容" id="pub_content">
+                                    </div>
+                                    <div class="mqtt_send">SEND</div>
+                                </div>
+                                <div class="fenge"></div>
+                                <div class="mqtt_sub">
+                                    <input type="text" name="" placeholder="sub_主题" id="sub_topic">
+                                    <div class="mqtt_s_send">
+                                        <div class="mqtt_s" id="sub_t">SUB</div>
+                                        <div class="mqtt_s" id="unsub_t">UNSUB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="mqtt_mes">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <!-- mana_c开始 -->
+        <!------------------------------------------------------------>
+        <!-- 模板引擎-位置 -->
+        <section class="kalada_m_c">
+            <section>
+                <ul id="user_list">
+                    <li class="user_l" v-for="(v,k) in userList">
+                        <div class="content">
+                            <div class="C_t">
+                                <div class="ct">
+                                    <div class="glass"></div>
+                                    <div class="user_data">
+                                        <div>
+                                            <h5>ID:</h5>&nbsp;&nbsp;{{v.id}}
+                                        </div>
+                                        <div>
+                                            <h5>User:</h5>
+                                            <h3>{{v.name}}</h3>
+                                        </div>
+                                        <div>
+                                            <h5>Status:</h5>&nbsp;&nbsp;<p>{{v.status}}</p>
+                                            <h5>Mana:</h5>&nbsp;&nbsp;<p>{{v.mana}}</p>
+                                        </div>
+                                        <div></div>
+                                    </div>
+                                    <div class="mana_c">
+                                        <svg @click = "changeMana(k)" t="1653531073230" class="icon user_mana" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8379" width="24" height="24">
+                                            <path d="M486.4 473.6c-121.6 0-221.867-100.267-221.867-221.867S362.667 29.867 486.4 29.867 708.267 128 708.267 251.733 608 473.6 486.4 473.6z m0-379.733c-87.467 0-157.867 70.4-157.867 157.866S398.933 409.6 486.4 409.6s157.867-70.4 157.867-157.867S571.733 93.867 486.4 93.867z m213.333 900.266h-428.8C160 994.133 70.4 904.533 70.4 793.6v-55.467C70.4 627.2 160 537.6 270.933 537.6H486.4c17.067 0 32 14.933 32 32s-14.933 32-32 32H270.933c-74.666 0-136.533 61.867-136.533 136.533V793.6c0 74.667 61.867 136.533 136.533 136.533h430.934c74.666 0 136.533-61.866 136.533-136.533 0-17.067 14.933-32 32-32s32 14.933 32 32c-2.133 110.933-91.733 200.533-202.667 200.533z" fill="#515151" p-id="8380" data-spm-anchor-id="a313x.7781069.0.i11" class=""></path>
+                                            <path d="M868.267 633.6H654.933c-17.066 0-32-14.933-32-32s14.934-32 32-32h213.334c17.066 0 32 14.933 32 32s-14.934 32-32 32z" fill="#b6d0cf" p-id="8381" data-spm-anchor-id="a313x.7781069.0.i9" class=""></path>
+                                            <path d="M761.6 740.267c-17.067 0-32-14.934-32-32V494.933c0-17.066 14.933-32 32-32s32 14.934 32 32v213.334c0 17.066-14.933 32-32 32z" fill="#b6d0cf" p-id="8382" data-spm-anchor-id="a313x.7781069.0.i8" class=""></path>
+                                        </svg>
+                                        <svg @click = "delUser(k)" style="float:right;" t="1653530775776" class="icon user_del" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6552" width="24" height="24">
+                                            <path d="M117.333333 960c-17.066667 0-32-14.933333-32-32 0-232.533333 187.733333-418.133333 420.266667-418.133333 83.2 0 164.266667 25.6 234.666667 72.533333 14.933333 8.533333 23.466667 27.733333 14.933333 42.666667-8.533333 14.933333-27.733333 23.466667-42.666667 14.933333-2.133333-2.133333-4.266667-2.133333-6.4-4.266667-162.133333-110.933333-384-68.266667-492.8 93.866667-42.666667 57.6-64 128-64 198.4 0 17.066667-14.933333 32-32 32z" p-id="6553" data-spm-anchor-id="a313x.7781069.0.i3" class="selected" fill="#515151"></path>
+                                            <path d="M505.6 573.866667c-140.8 0-253.866667-113.066667-253.866667-253.866667S364.8 64 505.6 64s253.866667 113.066667 253.866667 253.866667c0 140.8-115.2 256-253.866667 256z m0-445.866667c-104.533333 0-189.866667 85.333333-189.866667 189.866667s85.333333 189.866667 189.866667 189.866666 189.866667-85.333333 189.866667-189.866666-85.333333-189.866667-189.866667-189.866667zM906.666667 960c-8.533333 0-17.066667-4.266667-23.466667-8.533333l-181.333333-181.333334c-12.8-12.8-12.8-32 0-44.8 12.8-12.8 32-12.8 44.8 0l181.333333 181.333334c12.8 12.8 12.8 32 0 44.8-4.266667 4.266667-12.8 8.533333-21.333333 8.533333z" p-id="6554" data-spm-anchor-id="a313x.7781069.0.i2" class="" fill="#b6d0cf"></path>
+                                            <path d="M725.333333 960c-8.533333 0-17.066667-4.266667-23.466666-8.533333-12.8-12.8-12.8-32 0-44.8l181.333333-179.2c12.8-12.8 32-12.8 44.8-2.133334s12.8 32 2.133333 44.8c0 0 0 2.133333-2.133333 2.133334L746.666667 953.6c-4.266667 4.266667-12.8 6.4-21.333334 6.4z" p-id="6555" data-spm-anchor-id="a313x.7781069.0.i0" class="" fill="#b6d0cf"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </section>
+        <!-- 模板引擎-模板 -->
+        <!--        <script type="text/html" id="user_tep">
+            {{each}}
+
+        </script> -->
+        <!-- user开始 -->
+        <!------------------------------------------------------------>
+        <section class="kalada_user">
+            <section>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="glass"></div>
+                            <h1 class="ch_n">USER</h1>
+                            <div class="change_user">
+                                <div class="change_n">change uname</div>
+                                <div class="change_p">change upassword</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="glass"></div>
+                            <div class="app_qb"></div>
+                            <div class="message">扫码下载软件，有更为流畅、迅速、便捷、清晰的体验，还有更多功能。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="C_t">
+                        <div class="ct">
+                            <div class="exit">EXIT</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="glass_cover"></div>
+            <input type="text" name="" id="change_put" placeholder="请输入小于5个的英文字符" autofocus autocomplete="off">
+        </section>
+    </section>
+    <!-- 底部导航开始 -->
+    <!------------------------------------------------------------>
+    <section class="bottom_nav">
+        <!-- <div class="glass_1"></div> -->
+        <div class="font">
+            <div class="move_cube">
+                <p>control</p>
+            </div>
+            <!-- 控制页面 -->
+            <svg id="icon_control" t="1653365580374" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1290" width="24" height="24">
+                <path d="M32.071453 831.767214a31.989853 31.989853 0 0 1-11.836245-61.740417l290.147968-116.123167a31.989853 31.989853 0 1 1 23.672492 59.501127C15.756628 840.724373 41.028612 831.767214 32.071453 831.767214zM511.919251 287.939709a31.989853 31.989853 0 0 1-31.989853-31.989853V32.020883a31.989853 31.989853 0 0 1 63.979707 0v223.928973a31.989853 31.989853 0 0 1-31.989854 31.989853zM991.76705 831.767214c-8.957159 0 12.476043 7.357666-301.984215-118.362457a31.989853 31.989853 0 0 1 23.672492-59.501127l290.147968 116.123167A31.989853 31.989853 0 0 1 991.76705 831.767214z" fill="#70b6b5" p-id="1291" data-spm-anchor-id="a313x.7781069.0.i3" class=""></path>
+                <path d="M32.071453 831.767214a31.989853 31.989853 0 0 1-31.989853-31.989853V223.960003a31.989853 31.989853 0 0 1 63.979706 0v575.817358a31.989853 31.989853 0 0 1-31.989853 31.989853z" fill="#38004D" p-id="1292"></path>
+                <path d="M511.919251 799.777361a287.908679 287.908679 0 1 1 287.908679-287.908679 287.908679 287.908679 0 0 1-287.908679 287.908679z m0-511.837652a223.928973 223.928973 0 1 0 223.928973 223.928973 223.928973 223.928973 0 0 0-223.928973-223.928973z" fill="#bfbfbf" p-id="1293" data-spm-anchor-id="a313x.7781069.0.i2" class=""></path>
+                <path d="M991.76705 383.909269a31.989853 31.989853 0 0 0 31.989853-31.989853c0-139.47576 0-130.518601-2.23929-138.835963-6.717869-18.874013 20.153608-3.518884-497.762116-210.813133a31.989853 31.989853 0 0 0-23.672491 0C-13.674037 207.645178 6.799469 194.529338 1.681093 216.602336a19.51381 19.51381 0 0 0 0 14.715333c5.118377 22.392897-15.035231 8.957159 479.847798 206.334553v506.719275L43.907699 770.026797a31.989853 31.989853 0 0 0-41.586809 17.914318 31.989853 31.989853 0 0 0 17.914318 41.586809c526.233085 210.493234 476.009016 189.379931 479.847798 191.939119a31.989853 31.989853 0 0 0 24.952085 0l479.847799-191.939119A31.989853 31.989853 0 0 0 1023.756903 799.777361V479.878828a31.989853 31.989853 0 0 0-63.979706 0v298.145432l-415.868092 166.347237V437.652222l415.868092-166.347237V351.919416a31.989853 31.989853 0 0 0 31.989853 31.989853zM511.919251 66.569925L905.714345 223.960003 511.919251 381.350081 118.124158 223.960003z" fill="#515151" p-id="1294" data-spm-anchor-id="a313x.7781069.0.i0" class=""></path>
+            </svg>
+            <!-- 消息显示页面 -->
+            <svg id="icon_mqtt" t="1653365783114" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2127" data-spm-anchor-id="a313x.7781069.0.i17" width="27" height="27">
+                <path d="M735.883408 479.923962h-139.497898A287.954377 287.954377 0 0 0 703.888478 255.959446V223.964516a31.994931 31.994931 0 0 0-63.989862 0v31.99493a223.964516 223.964516 0 0 1-223.964516 223.964516 31.994931 31.994931 0 0 0 0 63.989862 223.964516 223.964516 0 0 1 223.964516 223.964515v31.994931a31.994931 31.994931 0 0 0 63.989862 0v-31.994931a287.954377 287.954377 0 0 0-107.502968-223.964515H735.883408a31.994931 31.994931 0 0 0 0-63.989862z" fill="#70b6b5" p-id="2128" data-spm-anchor-id="a313x.7781069.0.i15" class=""></path>
+                <path d="M351.944239 703.888478H95.984792a95.984792 95.984792 0 0 1-95.984792-95.984793v-191.969585a95.984792 95.984792 0 0 1 95.984792-95.984792h255.959447a95.984792 95.984792 0 0 1 95.984792 95.984792v191.969585a95.984792 95.984792 0 0 1-95.984792 95.984793zM95.984792 383.93917a31.994931 31.994931 0 0 0-31.99493 31.99493v191.969585a31.994931 31.994931 0 0 0 31.99493 31.994931h255.959447a31.994931 31.994931 0 0 0 31.994931-31.994931v-191.969585a31.994931 31.994931 0 0 0-31.994931-31.99493zM927.852993 639.898616h-127.979723a95.984792 95.984792 0 0 1-95.984792-95.984792v-63.989862a95.984792 95.984792 0 0 1 95.984792-95.984792h127.979723a95.984792 95.984792 0 0 1 95.984793 95.984792v63.989862a95.984792 95.984792 0 0 1-95.984793 95.984792z m-127.979723-191.969585a31.994931 31.994931 0 0 0-31.994931 31.994931v63.989862a31.994931 31.994931 0 0 0 31.994931 31.99493h127.979723a31.994931 31.994931 0 0 0 31.994931-31.99493v-63.989862a31.994931 31.994931 0 0 0-31.994931-31.994931zM735.883408 255.959446h-127.979723a95.984792 95.984792 0 0 1-95.984792-95.984792V95.984792a95.984792 95.984792 0 0 1 95.984792-95.984792h127.979723a95.984792 95.984792 0 0 1 95.984793 95.984792v63.989862a95.984792 95.984792 0 0 1-95.984793 95.984792z m-127.979723-191.969584a31.994931 31.994931 0 0 0-31.994931 31.99493v63.989862a31.994931 31.994931 0 0 0 31.994931 31.994931h127.979723a31.994931 31.994931 0 0 0 31.994931-31.994931V95.984792a31.994931 31.994931 0 0 0-31.994931-31.99493zM703.888478 991.842855a31.994931 31.994931 0 0 1 31.99493-31.994931 31.994931 31.994931 0 0 0 31.994931-31.994931v-63.989861a31.994931 31.994931 0 0 0-31.994931-31.994931h-127.979723a31.994931 31.994931 0 0 0-31.994931 31.994931v63.989861a31.994931 31.994931 0 0 0 31.994931 31.994931 31.994931 31.994931 0 0 1 31.994931 31.994931c0 61.110318-127.979723 31.994931-127.979723-63.989862v-63.989861a95.984792 95.984792 0 0 1 95.984792-95.984793h127.979723a95.984792 95.984792 0 0 1 95.984793 95.984793v63.989861c0 95.984792-127.979723 125.420129-127.979723 63.989862z" fill="#515151" p-id="2129" data-spm-anchor-id="a313x.7781069.0.i18" class=""></path>
+                <path d="M287.954377 543.913824H159.974654a31.994931 31.994931 0 0 1 0-63.989862h127.979723a31.994931 31.994931 0 0 1 0 63.989862z" fill="#bfbfbf" p-id="2130" data-spm-anchor-id="a313x.7781069.0.i16" class=""></path>
+            </svg>
+            <!-- 管理员页面 -->
+            <svg id="icon_mana" t="1653365929173" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2963" width="24" height="24">
+                <path d="M864 768H160a32 32 0 0 1 0-64h704a32 32 0 0 1 0 64zM704 448H320a32 32 0 0 1 0-64h384a32 32 0 0 1 0 64z" fill="#70b6b5" p-id="2964" data-spm-anchor-id="a313x.7781069.0.i29" class="selected"></path>
+                <path d="M992 224a32 32 0 0 0 0-64c-241.28 0-230.4-2.24-241.6 5.44l-102.08 67.84L540.48 17.6a32 32 0 0 0-56.96 0L238.72 506.88l-27.52-20.48c-11.84-8.64-7.04-6.4-179.2-6.4a32 32 0 0 0 0 64h149.44l28.16 21.12L3.52 977.6A32 32 0 0 0 32 1024h960a32 32 0 0 0 28.48-46.4l-176-352a32 32 0 0 0-56.96 28.8L940.16 960H83.84l177.92-355.84 39.04 29.44a32 32 0 1 0 38.4-51.2l-48.32-36.48L512 103.68l82.88 165.44-36.48 24.32a32 32 0 0 0 35.2 53.12l30.08-19.84 99.84 199.68a32 32 0 1 0 56.96-28.8l-103.36-206.72L777.6 224z" fill="#515151" p-id="2965" data-spm-anchor-id="a313x.7781069.0.i27" class=""></path>
+                <path d="M32 416h160a32 32 0 0 0 0-64H32a32 32 0 0 0 0 64zM768 96h224a32 32 0 0 0 0-64h-224a32 32 0 0 0 0 64z" fill="#38004D" p-id="2966"></path>
+            </svg>
+            <!-- 用户信息显示页面 -->
+            <svg id="icon_user" t="1653366316135" class="icon" viewBox="0 0 1026 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3279" data-spm-anchor-id="a313x.7781069.0.i37" width="24" height="24">
+                <path d="M514.06016 96A320 320 0 0 0 34.06016 494.08a32 32 0 1 0 57.28-28.16A256 256 0 0 1 466.38016 140.8a317.44 317.44 0 0 0 0 422.4A256 256 0 0 1 162.06016 551.04a32 32 0 0 0-40.32 49.92A320 320 0 0 0 514.06016 608a320 320 0 1 0 0-512z m0 86.72a254.08 254.08 0 0 1 0 337.28 254.08 254.08 0 0 1 0-336.64z m47.68 380.48a317.44 317.44 0 0 0 0-422.4 256 256 0 1 1 0 422.4z" fill="#515151" p-id="3280" data-spm-anchor-id="a313x.7781069.0.i34" class=""></path>
+                <path d="M514.06016 992a320 320 0 1 1 320-320 320 320 0 0 1-320 320z m0-576a256 256 0 1 0 256 256 256 256 0 0 0-256-256z" fill="#70b6b5" p-id="3281" data-spm-anchor-id="a313x.7781069.0.i36" class=""></path>
+            </svg>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/vue.min.js"></script>
+<script type="text/javascript" src="./js/mqtt.min.js"></script>
+<!-- <script type="text/javascript" src="./js/template-web.js"></script> -->
+<script type="text/javascript" src="./js/control.js"></script>
+<script type="text/javascript" src="./js/md5.js"></script>
+
+</html>
