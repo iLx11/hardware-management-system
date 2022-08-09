@@ -10,7 +10,7 @@ $(function() {
     $('#user').on("blur", () => {
         $.ajax({
             type: "POST",
-            url: "http://localhost/user/userVerify",
+            url: "/user/userVerify",
             data: {
                 name: $('#user').val(),
             },
@@ -28,7 +28,7 @@ $(function() {
         if ($('#user').val() != '' && $('#password').val() != '') {
             $.ajax({
                 type: "POST",
-                url: "http://localhost/user/userVerify",
+                url: "/user/userVerify",
                 data: {
                     name: $('#user').val(),
                 },
@@ -36,14 +36,14 @@ $(function() {
                     if (res != "Exist") {
                         $.ajax({
                             type: "POST",
-                            url: "http://localhost/user/addUser",
+                            url: "/user/addUser",
                             data: {
                                 name: $('#user').val(),
                                 password: md5($('#password').val())
                             },
                             success(res) {
                                 if (res == "Successful") {
-                                    window.location.href = "http://localhost/index.html";
+                                    window.location.href = "/index.html";
                                 }
                             }
                         });

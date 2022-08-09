@@ -791,7 +791,7 @@ p {
 .change_n {
     width: 100%;
     height: 46%;
-    background: rgba(0, 139, 139, 0.4);
+    background: rgba(0, 139, 139, 0.3);
     box-shadow: -1px -1px 1px 0.5px white;
     border-radius: 6px;
     /*margin: 1em 0;*/
@@ -805,7 +805,7 @@ p {
 .change_p {
     width: 100%;
     height: 46%;
-    background: rgba(0, 139, 139, 0.4);
+    background: rgba(0, 139, 139, 0.3);
     box-shadow: 0.7px -0.7px 1px 0.5px white;
     border-radius: 6px;
 }
@@ -837,7 +837,7 @@ p {
 .exit {
     width: 100%;
     height: 3em;
-    background: rgba(233, 194, 191, 0.6);
+    background: rgba(233, 194, 191, 0.4);
     box-shadow: 4px 4px 20px 3px rgba(111, 109, 133, 0.3);
     border-radius: 10px;
     text-align: center;
@@ -862,32 +862,43 @@ p {
     border-radius: 10px;
 
 }
-
-#change_put {
-    width: 90%;
+.userChange {
+    width: 92%;
     border: none;
-    height: 2.8em;
-    background: rgba(254, 238, 237, 1);
-    box-shadow: 0 0 1px 3px white;
-    border-radius: 6px;
-    text-align: center;
-    margin-top: 1em;
+    height: 3.5em;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 3px 4px 12px 3px rgba(111, 109, 133, 0.55);
+    border-radius: 20px;
+
     position: absolute;
-    top: 43%;
-    left: 45%;
-    margin-left: -40%;
-    z-index: 6;
+    top: 34%;
+    left: 50%;
+    margin-left: -46%;
+    z-index: 66;
     display: none;
-    font-size: 16px;
 }
 
+#change_put {
+   width: 82%;
+   border: none;
+   height: 4em;
+    background: rgba(0,0,0, 0);
+    text-align: center;
+    transform: translateY(-1em);
+    font-size: 18px;
+    z-index: 66;
+
+}
+.userChange svg {
+    height: 3.3em;
+}
 .glass_cover {
     width: 100%;
     height: 100%;
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
-    background: rgba(116, 120, 124, 0.65);
+    background: rgba(255, 255, 255, 0.6);
     filter: blur(20px);
-    z-index: 5;
+    z-index: 4;
 }

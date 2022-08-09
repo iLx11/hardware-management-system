@@ -11,11 +11,11 @@ $(function() {
     var shuzu = JSON.parse(res);
     // $.ajax({
     //     type: "POST",
-    //     url: "http://localhost/user/userVerify",
+    //     url: "/user/userVerify",
     //     success(res) {
     //         if (res == "Successful") {
     //             alert("验证成功");
-    //             window.location.href = "http://localhost/control.html";
+    //             window.location.href = "/control.html";
     //         }
     //     }
     // });
@@ -23,7 +23,7 @@ $(function() {
         if ($('#user').val() != '' && $('#password').val() != '') {
             $.ajax({
                 type: "POST",
-                url: "http://localhost/user/userVerify",
+                url: "/user/userVerify",
                 data: {
                     name: $('#user').val(),
                     password: md5($('#password').val())
@@ -32,11 +32,11 @@ $(function() {
                     console.log(res)
                     if (res == "Successful") {
                         alert("验证成功");
-                        window.location.href = "http://localhost/control.html";
+                        window.location.href = "/control.html?user=" + $('#user').val();
                     } else {
                         alert("验证失败");
                         if (confirm("请问是否跳转到注册页面")) {
-                            window.location.href = "http://localhost/register.html";
+                            window.location.href = "/register.html";
                         }
                     }
                 }

@@ -25,7 +25,6 @@ public class userServiceImp implements userService {
         userMapper userMapper = sqlSession.getMapper(userMapper.class);
         User result = userMapper.userVerify(name,password);
         sqlSession.close();
-        System.out.println(result);
         return result;
     }
     public void deleteById(int id) {

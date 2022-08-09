@@ -5,25 +5,11 @@ $(function() {
         $('.constructor').delay(700).fadeIn(800);
         $('.bottom_nav').delay(700).fadeIn(800);
         $('.doorPassword').delay(700).fadeIn(800);
-        // $('.kalada_c').fadeOut(10);
-        // $('.kalada_m_m').fadeOut(10);
-        // $('.kalada_m_c').fadeOut(10);
         // 兼容safari
         // if ((/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent))) {
         //     $('.C_t').css("background", "rgba(226, 225, 223, 0.87)");
         // }   
     });
-    // var kk = 30;
-    // if (kk > 15) {
-    //     $('.headData').fadeOut(10);
-    //     $('.auto_temp').fadeIn(10);
-    //     // setTimeout(() => {
-    //     //     console.log('nininininiin')
-    //     //     $('.headData').fadeIn(10);
-    //     //     $('.auto_temp').fadeOut(10);
-    //     // }, 3000);
-    // }
-
     //温湿度数据获取
     $('.content_data').on('click', () => {
         console.log('-----------hum------------------')
@@ -78,18 +64,8 @@ $(function() {
     var c_user = '';
     var shu = { "user": [{ "id": "1", "name": "L", "password": "e10adc3949ba59abbe56e057f20f883e", "state": false, "mana": true }, { "id": "2", "name": "ceshi", "password": "c33367701511b4f6020ec61ded352059", "state": false, "mana": false }, { "id": "3", "name": "ceshi2", "password": "c33367701511b4f6020ec61ded352059", "state": false, "mana": false }] };
 
-    var current_user = getUrlQueryString('current_user');
-    // shu.user.forEach((o) => {
-    //     if (md5(o.name) == current_user) {
-    //         alert('欢迎您的登录' + o.name);
-    //         $('.ch_n').html(o.name);
-    //         c_user = o.name;
-    //         if (o.mana != true) {
-    //             $('.kalada_m_c').fadeOut(10);
-    //             $('#icon_mana').fadeOut(10);
-    //         }
-    //     }
-    // })
+    var current_user = getUrlQueryString('user');
+    $('.ch_n').html(current_user);
 
     //检测跳转页面传回来的参数
     function getUrlQueryString(names, urls) {
@@ -123,6 +99,7 @@ $(function() {
     }
     //wss://bemfa.com:9504/wss
     var mqttClient = '';
+
     // MQTT服务器地址输入
     $('#mqt').blur(() => {
         console.log('sdf')
@@ -238,7 +215,7 @@ $(function() {
     var curtain_control = new control('.curtain_o', '.curtain_c', 0, 'curtainHandle');
 
     // 页面内容跳转与更改
-    class change {
+    class PageChange {
         constructor(a, b, c, d, e) {
             this.e = e;
             var page = ['.kalada_c', '.kalada_m_m', '.kalada_m_c', '.kalada_user'];
@@ -277,21 +254,21 @@ $(function() {
             $(this.e).find('p').html(i);
         }
     }
-    new change('#icon_control', '#icon_mqtt', '#icon_mana', '#icon_user', '.move_cube');
+    new PageChange('#icon_control', '#icon_mqtt', '#icon_mana', '#icon_user', '.move_cube');
 
     // mqtt消息测试
     class mqttBox {
         constructor(a, b, c, d, e, f) {
-            $(a).click(() => {
+            $(a).on("click", () => {
                 let topic = $(b).val();
                 let content = $(c).val();
-                if (topic.replaceAll(' ', '') != '' && content.replaceAll(' ', '') != '') {
+                if (topic.trim() != '' && content.trim() != '') {
                     mqttClient.publish(topic, content);
                 }
             })
-            $(e).click(() => {
+            $(e).on("click", () => {
                 let topic = $(d).val();
-                if (topic.replaceAll(' ', '') != '') {
+                if (topic.trim() != '') {
                     mqttClient.subscribe('ceshi', function(err) {
                         if (!err) {
                             console.log("subscribe success!")
@@ -303,9 +280,9 @@ $(function() {
                     })
                 }
             })
-            $(f).click(() => {
+            $(f).on("click", () => {
                 let topic = $(d).val();
-                if (topic.replaceAll(' ', '') != '') {
+                if (topic.trim() != '') {
                     mqttClient.unsubscribe(topic, (err) => {
                         if (!err) {
                             console.log('unsubscribe success')
@@ -319,7 +296,7 @@ $(function() {
 
 
     // 用户列表操作
-    var User = new Vue({
+    var Mana = new Vue({
         el: '#user_list',
         data: {
             userList: [],
@@ -328,7 +305,7 @@ $(function() {
             let that = this;
             $.ajax({
                 type: "GET",
-                url: "http://localhost/user/selectAll",
+                url: "/user/selectAll",
                 success(res) {
                     console.log(res)
                     that.userList = JSON.parse(res);
@@ -341,7 +318,7 @@ $(function() {
                 if (confirm("您确定要删除此用户吗")) {
                     $.ajax({
                         type: "GET",
-                        url: "http://localhost/user/deleteUser",
+                        url: "/user/deleteUser",
                         data: {
                             id: k + 1,
                         },
@@ -355,14 +332,14 @@ $(function() {
                 let that = this;
                 if (confirm("您确定要更改此用户的管理员的权限吗")) {
                     console.log(this.userList[k].mana);
-                    this.changeUser(4,!this.userList[k].mana,"123",this.userList[k].name);
+                    this.changeUser(4, !this.userList[k].mana, "123", this.userList[k].name);
                 }
             },
             changeUser(a, b, c, d) {
                 let that = this;
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost/user/changeUser",
+                    url: "/user/changeUser",
                     data: {
                         set: a,
                         status: b,
@@ -379,105 +356,85 @@ $(function() {
     });
 
     //用户界面操作
-    class user {
+    class User {
         constructor() {
-            this.shuzu;
-            // this.getData(1);
-            this.c_name = c_user;
             //更改用户名
-            $('.change_n').click(() => {
-                this.userChange();
-                $('#change_put').blur(() => {
-                    $('.glass_cover').fadeOut(10);
-                    $('#change_put').fadeOut(10);
-                    $('.bottom_nav').fadeIn(10);
-                    if ($('#change_put').val() != "") {
-                        this.getData(1, "name", $('#change_put').val());
-                        console.log($('#change_put').val());
-                    }
-                    $('#change_put').val("");
-                })
+            $('.change_n').on("click", () => {
+                this.dataTransfer(1);
             });
             //更改密码
-            $('.change_p').click(() => {
-                this.userChange();
-                $('#change_put').blur(() => {
-                    $('.glass_cover').fadeOut(10);
-                    $('#change_put').fadeOut(10);
-                    $('.bottom_nav').fadeIn(10);
-                    if ($('#change_put').val() != "") {
-                        this.getData(1, "passw", $('#change_put').val());
-                        console.log($('#change_put').val());
-                    }
-                    $('#change_put').val("");
-                })
-
-
+            $('.change_p').on("click", () => {
+                this.dataTransfer(2);
             });
-
-            $('.exit').click(() => {
+            $('.exit').on("click", () => {
                 if (confirm('请问您真的想要退出吗')) {
                     this.getData(1, "passw", $('#change_put').val());
-                    window.location.href = './index.html';
+                    window.location.href = '/index.html';
                 }
             })
 
         }
-        change() {
-
-        }
-
-        userChange() {
-            $('.glass_cover').fadeIn(10);
-            $('#change_put').fadeIn(10);
-            $('.bottom_nav').fadeOut(10);
-
-        }
-        getData(x, l, c) {
-            var that = this;
-            console.log('---------------get----------------')
-            $.ajax({
-                type: 'GET',
-                url: 'userver',
-                data: {
-                    json: x,
-                },
-                success(res) {
-                    console.log(res)
-                    console.log('-----------res-----------')
-                    if (x == 1) {
-                        that.shuzu = JSON.parse(res);
-                        if (l != 0) {
-                            that.shuzu.user.forEach((o, i) => {
-                                if (that.c_name == o.name) {
-                                    if (l == "name") {
-                                        that.shuzu.user[i].name = c;
-                                        console.log('success_______')
-                                        that.getData(JSON.stringify(that.shuzu));
-                                    }
-                                    if (l == "passw") {
-                                        that.shuzu.user[i].password = md5(c);
-                                        console.log('success_______')
-
-                                        that.getData(JSON.stringify(that.shuzu));
-
-                                    }
+        dataTransfer(a) {
+            let that = this;
+            $('.userChange').show();
+            $('.glass_cover').show();
+            $('.bottom_nav').hide();
+            $('#user_c_inp').on("click", () => {
+                $('.userChange').hide();
+                $('.glass_cover').hide();
+                $('.bottom_nav').show();
+                if ($('#change_put').val() != "") {
+                    if (a == 1) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/user/userVerify",
+                            data: {
+                                name: $('#change_put').val(),
+                            },
+                            success(res) {
+                                if (res != "Exist") {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: "/user/changeUser",
+                                        data: {
+                                            set: a,
+                                            status: false,
+                                            value: $('#change_put').val(),
+                                            name: current_user,
+                                        },
+                                        success(res) {
+                                            console.log(res)
+                                            Mana.userList = JSON.parse(res);
+                                            $('.ch_n').html($('#change_put').val());
+                                        }
+                                    });
+                                } else {
+                                    alert("抱歉，此用户名已注册");
                                 }
-                            });
-                        }
 
-
-                    } else {
-
-                        console.log(res)
+                            }
+                        });
+                    }
+                    if (a == 2) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/user/changeUser",
+                            data: {
+                                set: a,
+                                status: false,
+                                value: md5($('#change_put').val()),
+                                name: current_user,
+                            },
+                            success(res) {
+                                console.log(res)
+                            }
+                        });
                     }
 
                 }
             });
-
-
+            $('#change_put').val("");
         }
     }
-
-    new user();
+    new User();
 });

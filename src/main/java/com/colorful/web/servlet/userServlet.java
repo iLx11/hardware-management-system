@@ -25,13 +25,7 @@ public class userServlet extends baseServlet {
     }
 
     public void userVerify(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        Cookie[] cookies = request.getCookies();
-//        for (Cookie cookie: cookies) {
-//            System.out.println(cookie.getName());
-//            if(cookie.getName() == "user") {
-//
-//            }
-//        }
+        System.out.println("验证请求");
         String name = request.getParameter("name");
         String password = request.getParameter("password");
         if (password == null) {
