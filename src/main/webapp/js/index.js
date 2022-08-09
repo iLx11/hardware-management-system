@@ -6,19 +6,6 @@ $(function() {
         var clientH = document.documentElement.clientHeight;
         $('.sub').css("height", clientH);
     });
-
-    var res = '{"user":[{"id":"1","name":"L","password":"e10adc3949ba59abbe56e057f20f883e","state":true},{"id":"2","name":"ceshi","password":"c33367701511b4f6020ec61ded352059","state":false}]}';
-    var shuzu = JSON.parse(res);
-    // $.ajax({
-    //     type: "POST",
-    //     url: "/user/userVerify",
-    //     success(res) {
-    //         if (res == "Successful") {
-    //             alert("验证成功");
-    //             window.location.href = "/control.html";
-    //         }
-    //     }
-    // });
     $('#sub').click(() => {
         if ($('#user').val() != '' && $('#password').val() != '') {
             $.ajax({
@@ -31,16 +18,31 @@ $(function() {
                 success(res) {
                     console.log(res)
                     if (res == "Successful") {
-                        alert("验证成功");
+                        warn("验证成功");
                         window.location.href = "/control.html?user=" + $('#user').val();
                     } else {
-                        alert("验证失败");
-                        if (confirm("请问是否跳转到注册页面")) {
-                            window.location.href = "/register.html";
-                        }
+                        warn("验证失败");
+                        setTimeout(() => {
+                            conf("请问是否跳转到注册页面", () => {
+                                window.location.href = "/register.html";
+                            });
+                        }, 1000);
                     }
                 }
             });
         }
     });
 });
+
+
+[{
+    id: 1,
+    name: "Door",
+    hardwareId: "SISW1",
+    status: true,
+},{
+    id: 1,
+    name: "Door",
+    hardwareId: "SISW1",
+    status: true,
+},];

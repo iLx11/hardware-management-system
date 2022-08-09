@@ -297,9 +297,13 @@ $(function() {
 
     // 用户列表操作
     var Mana = new Vue({
-        el: '#user_list',
+        el: '#hardware_sys',
         data: {
             userList: [],
+            hardwareList: [
+                [],
+                []
+            ],
         },
         mounted() {
             let that = this;
@@ -311,11 +315,32 @@ $(function() {
                     that.userList = JSON.parse(res);
                 }
             });
+            this.hardwareList[1] = [{
+                id: 1,
+                name: "Door",
+                hardwareId: "SISW1",
+                status: true,
+            }, {
+                id: 1,
+                name: "Fan",
+                hardwareId: "SISW1",
+                status: true,
+            }, {
+                id: 1,
+                name: "Wet",
+                hardwareId: "SISW1",
+                status: true,
+            }, {
+                id: 1,
+                name: "Curtain",
+                hardwareId: "SISW1",
+                status: true,
+            }, ];
         },
         methods: {
             delUser(k) {
                 let that = this;
-                if (confirm("您确定要删除此用户吗")) {
+                conf("您确定要删除此用户吗", () => {
                     $.ajax({
                         type: "GET",
                         url: "/user/deleteUser",
@@ -324,21 +349,27 @@ $(function() {
                         },
                         success(res) {
                             that.userList = JSON.parse(res);
+                            warn("删除成功");
+
                         }
                     });
-                }
+                });
             },
             changeMana(k) {
                 let that = this;
-                if (confirm("您确定要更改此用户的管理员的权限吗")) {
+                conf("您确定要更改此用户的管理员权限吗", () => {
                     console.log(this.userList[k].mana);
-                    this.changeUser(4, !this.userList[k].mana, "123", this.userList[k].name);
-                }
+                    this.changeUser(4, !this.userList[k].mana, null, this.userList[k].name, (res) => {
+                        console.log(res)
+                        that.userList = JSON.parse(res);
+                        warn("修改完成");
+                    });
+                });
             },
-            changeUser(a, b, c, d) {
+            changeUser(a, b, c, d, e) {
                 let that = this;
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     url: "/user/changeUser",
                     data: {
                         set: a,
@@ -347,8 +378,7 @@ $(function() {
                         name: d,
                     },
                     success(res) {
-                        console.log(res)
-                        that.userList = JSON.parse(res);
+                        e(res);
                     }
                 });
             }
@@ -367,12 +397,16 @@ $(function() {
                 this.dataTransfer(2);
             });
             $('.exit').on("click", () => {
-                if (confirm('请问您真的想要退出吗')) {
-                    this.getData(1, "passw", $('#change_put').val());
-                    window.location.href = '/index.html';
-                }
+                this.exit();
             })
-
+        }
+        exit() {
+            conf("请问您真的想要退出吗", () => {
+                Mana.changeUser(3, false, null, $('.ch_n').html(), (res) => {
+                    warn("已退出");
+                    window.location.href = '/index.html';
+                });
+            });
         }
         dataTransfer(a) {
             let that = this;
@@ -391,46 +425,22 @@ $(function() {
                             data: {
                                 name: $('#change_put').val(),
                             },
-                            success(res) {
-                                if (res != "Exist") {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: "/user/changeUser",
-                                        data: {
-                                            set: a,
-                                            status: false,
-                                            value: $('#change_put').val(),
-                                            name: current_user,
-                                        },
-                                        success(res) {
-                                            console.log(res)
-                                            Mana.userList = JSON.parse(res);
-                                            $('.ch_n').html($('#change_put').val());
-                                        }
+                            success(response) {
+                                if (response != "Exist") {
+                                    Mana.changeUser(a, false, $('#change_put').val(), current_user, (res) => {
+                                        warn("修改完成");
+                                        Mana.userList = JSON.parse(res);
+                                        $('.ch_n').html($('#change_put').val());
                                     });
                                 } else {
-                                    alert("抱歉，此用户名已注册");
+                                    warn("抱歉，此用户名已注册");
                                 }
-
                             }
                         });
                     }
                     if (a == 2) {
-                        $.ajax({
-                            type: "GET",
-                            url: "/user/changeUser",
-                            data: {
-                                set: a,
-                                status: false,
-                                value: md5($('#change_put').val()),
-                                name: current_user,
-                            },
-                            success(res) {
-                                console.log(res)
-                            }
-                        });
+                        Mana.changeUser(a, false, md5($('#change_put').val()), current_user, (res) => { warn("修改完成"); });
                     }
-
                 }
             });
             $('#change_put').val("");

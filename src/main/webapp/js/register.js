@@ -17,9 +17,9 @@ $(function() {
             success(res) {
                 console.log(res)
                 if (res == "Exist") {
-                    alert("抱歉，此用户名已注册")
+                    warn("抱歉，该用户名已被占用");
                 } else {
-                    alert("该用户名可用");
+                    warn("该用户名可用");
                 }
             }
         });
@@ -48,7 +48,7 @@ $(function() {
                             }
                         });
                     } else {
-                        alert("抱歉，此用户名已注册");
+                        warn("抱歉，该用户名已被占用");
                     }
 
                 }

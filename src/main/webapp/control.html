@@ -18,7 +18,7 @@
         </div>
     </div>
     <!-- 页面加载结束 -->
-    <section class="constructor">
+    <section id="hardware_sys" class="constructor">
         <header>
             iLx1
         </header>
@@ -98,7 +98,7 @@
                                 <div class="analog led_analog">亮度调整</div>
                             </div>
                             <div class="switch led_switch">
-                                <div class="o_n led_on">
+                                <div class="o_n led_on ">
                                     <h4>开灯</h4>
                                 </div>
                                 <div class="o_ff led_off">
@@ -153,13 +153,13 @@
             <!------------------------------------------------------------>
             <!-- 控制门开始 -->
             <section>
-                <div class="content">
+                <div class="content" v-for="(v,k) in hardwareList[1]">
                     <div class="C_t">
                         <div class="ct">
                             <div class="con_open">
                                 <!-- <div class="glass"></div> -->
                                 <div class="con_situation">
-                                    <h1>Door<br>
+                                    <h1>{{v.name}}<br>
                                         <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close</div>
                                         </h4>
                                     </h1>
@@ -172,73 +172,7 @@
                 </div>
             </section>
             <!-- 控制门结束 -->
-            <!------------------------------------------------------------>
-            <!-- 控制风扇开始 -->
-            <section>
-                <div class="content">
-                    <div class="C_t">
-                        <div class="ct">
-                            <div class="con_open">
-                                <!-- <div class="glass"></div> -->
-                                <div class="con_situation">
-                                    <h1>Fan<br>
-                                        <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close</div>
-                                        </h4>
-                                    </h1>
-                                </div>
-                                <div class="con_o fan_o">&nbsp;&nbsp;open</div>
-                                <div class="con_c fan_c">close&nbsp;&nbsp;</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- 控制风扇结束 -->
-            <!------------------------------------------------------------>
-            <!-- 控制加湿开始 -->
-            <section>
-                <div class="content">
-                    <div class="C_t">
-                        <div class="ct">
-                            <div class="con_open">
-                                <!-- <div class="glass"></div> -->
-                                <div class="con_situation">
-                                    <h1>Wet<br>
-                                        <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close</div>
-                                        </h4>
-                                    </h1>
-                                </div>
-                                <div class="con_o wet_o">&nbsp;&nbsp;open</div>
-                                <div class="con_c wet_c">close&nbsp;&nbsp;</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- 控制加湿结束 -->
-            <!------------------------------------------------------------>
-            <!-- 控制窗帘开始 -->
-            <section>
-                <div class="content">
-                    <div class="C_t">
-                        <div class="ct">
-                            <div class="con_open">
-                                <!-- <div class="glass"></div> -->
-                                <div class="con_situation">
-                                    <h1>Curtain<br>
-                                        <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close </div>
-                                        </h4>
-                                    </h1>
-                                </div>
-                                <div class="con_o curtain_o">&nbsp;&nbsp;open</div>
-                                <div class="con_c curtain_c">close&nbsp;&nbsp;</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- 控制窗帘结束 -->
-            <!------------------------------------------------------------>
+
             <!-- 占位开始 -->
             <!------------------------------------------------------------>
             <div class="content">
@@ -415,6 +349,7 @@
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script type="text/javascript" src="./js/vue.min.js"></script>
 <script type="text/javascript" src="./js/mqtt.min.js"></script>
+<script type="text/javascript" src="./js/pxmu.min.js"></script>
 <!-- <script type="text/javascript" src="./js/template-web.js"></script> -->
 <script type="text/javascript" src="./js/control.js"></script>
 <script type="text/javascript" src="./js/md5.js"></script>
