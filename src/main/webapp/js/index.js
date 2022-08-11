@@ -4,6 +4,7 @@ $(function() {
         $('.kalada').delay(800).fadeIn(400);
         // 获取设备高度
         var clientH = document.documentElement.clientHeight;
+        document.querySelector(".sub").style.height = clientH;
         $('.sub').css("height", clientH);
     });
     $('#sub').click(() => {
@@ -33,16 +34,3 @@ $(function() {
         }
     });
 });
-
-
-[{
-    id: 1,
-    name: "Door",
-    hardwareId: "SISW1",
-    status: true,
-},{
-    id: 1,
-    name: "Door",
-    hardwareId: "SISW1",
-    status: true,
-},];

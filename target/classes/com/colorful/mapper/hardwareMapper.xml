@@ -5,12 +5,17 @@
 
 
 <mapper namespace="com.colorful.mapper.hardwareMapper">
+    <resultMap id="hardwareMap" type="com.colorful.pojo.Hardware">
+        <result column="hardware_id" property="hardwareID"></result>
+        <result column="hardware_port" property="hardwarePort"></result>
+    </resultMap>
+    <insert id="addHardware">
+        insert into hardware_data (name,hardware_id,hardware_port,status)
+        value (#{name},#{hardware_id},#{hardware_port},1);
+    </insert>
+    <select id="selectAll" resultMap="hardwareMap" resultType="com.colorful.pojo.Hardware">
+        select * from hardware_data;
+    </select>
 
-    <select id="selectAll" resultType="com.colorful.pojo.User">
-        select * from sqltest;
-    </select>
-    <select id="insertData" resultType="com.colorful.pojo.User">
-        insert into  sqltest (name,age) value ( #{name},#{age});
-    </select>
 </mapper>
 

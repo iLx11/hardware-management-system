@@ -34,7 +34,6 @@
                     <div class="C_t">
                         <div class="ct">
                             <div class="head_data">
-                                <!-- <div class="glass"></div> -->
                                 <div class="head_situation">
                                     <h1>Data<br>
                                         <h4>success</h4>
@@ -85,24 +84,24 @@
             <!------------------------------------------------------------>
             <!-- 控制灯光开始 -->
             <section>
-                <div class="content">
+                <div class="content" v-for="(v,k) in hardwareList[0]">
                     <div class="C_t">
                         <div class="ct ab">
                             <div class=" open led_open">
                                 <div class="glass"></div>
                                 <div class="situation led_situation">
-                                    <h1>Light:&nbsp;<div class="state">Close </div><br>
+                                    <h1>{{v.name}}:&nbsp;<div class="state">Close </div><br>
                                         <h4>success</h4>
                                     </h1>
                                 </div>
-                                <div class="analog led_analog">亮度调整</div>
+                                <div class="analog led_analog">模拟调整</div>
                             </div>
                             <div class="switch led_switch">
                                 <div class="o_n led_on ">
-                                    <h4>开灯</h4>
+                                    <h4>打开</h4>
                                 </div>
                                 <div class="o_ff led_off">
-                                    <h4>关灯</h4>
+                                    <h4>关闭</h4>
                                 </div>
                             </div>
                         </div>
@@ -115,41 +114,6 @@
                     </div>
                 </div>
             </section>
-            <!-- 控制灯光结束 -->
-            <!------------------------------------------------------------>
-            <!-- 控制窗户开始 -->
-            <section>
-                <div class="content">
-                    <div class="C_t">
-                        <div class="ct">
-                            <div class="open led_open">
-                                <!-- <div class="glass"></div> -->
-                                <div class="situation wind_situation">
-                                    <h1>Window:&nbsp;<div class="state">Close </div><br>
-                                        <h4>success</h4>
-                                    </h1>
-                                </div>
-                                <div class="analog wind_analog">角度调整</div>
-                            </div>
-                            <div class="switch wind_switch">
-                                <div class="o_n wind_on">
-                                    <h4>开窗</h4>
-                                </div>
-                                <div class="o_ff wind_off">
-                                    <h4>关窗</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <section class="bar">
-                            <input class="bar-input analogInp" type="range" min="0" max="100" value="100">
-                            <div class="ind">
-                                <div class="indicator">100%</div>
-                            </div>
-                        </section>
-                    </div>
-                </div>
-            </section>
-            <!-- 控制窗户结束 -->
             <!------------------------------------------------------------>
             <!-- 控制门开始 -->
             <section>
@@ -157,7 +121,6 @@
                     <div class="C_t">
                         <div class="ct">
                             <div class="con_open">
-                                <!-- <div class="glass"></div> -->
                                 <div class="con_situation">
                                     <h1>{{v.name}}<br>
                                         <h4>success&nbsp;&nbsp;&nbsp;&nbsp;<div class="state">Close</div>
@@ -172,7 +135,6 @@
                 </div>
             </section>
             <!-- 控制门结束 -->
-
             <!-- 占位开始 -->
             <!------------------------------------------------------------>
             <div class="content">
@@ -222,9 +184,121 @@
         </section>
         <!-- mana_c开始 -->
         <!------------------------------------------------------------>
-        <!-- 模板引擎-位置 -->
         <section class="kalada_m_c">
+            <div class="glass_cover"></div>
+            <div class="content conH changeH">
+                <div class="C_t">
+                    <div class="ct">
+                        <div class="con_hardware">
+                            <div>
+                                <h5>硬件名:</h5>
+                                <input class="h_inp" type="text" name="">
+                            </div>
+                            <div>
+                                <h5>硬件port:</h5>
+                                <input class="h_inp" type="text" name="">
+                            </div>
+                            <div>
+                                <h5>硬件ID:</h5>
+                                <div class="hw_sub">
+                                    <select class="h_inp">
+                                        <option value="AGSW01">AGSW01</option>
+                                        <option value="SWSW01">SWSW01</option>
+                                    </select>
+                                    <div class="conH_sub changeH_sub">
+                                        修改
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="C_t">
+                    <div class="ct">
+                        <div class="mana_nav">
+                            <div class="user_nav">
+                                <h1>User</h1>
+                            </div>
+                            <div class="hardware_nav">
+                                <h1>Hardware</h1>
+                            </div>
+                            <div class="addHardware">
+                                <h1>添加硬件</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content conH addH">
+                <div class="C_t">
+                    <div class="ct">
+                        <div class="add_hardware con_hardware">
+                            <div>
+                                <h5>硬件名:</h5>
+                                <input class="h_inp" type="text" name="">
+                            </div>
+                            <div>
+                                <h5>硬件port:</h5>
+                                <input class="h_inp" type="text" name="">
+                            </div>
+                            <div>
+                                <h5>硬件ID:</h5>
+                                <div class="hw_sub">
+                                    <select class="h_inp">
+                                        <option value="AGSW01">AGSW01</option>
+                                        <option value="SWSW01">SWSW01</option>
+                                    </select>
+                                    <div @click="addHardware" class="conH_sub addH_sub">
+                                        添加
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <section>
+                <ul id="hardware_list">
+                    <li class="user_l" v-for="(v,k) in HardwareList">
+                        <div class="content">
+                            <div class="C_t">
+                                <div class="ct">
+                                    <div class="glass"></div>
+                                    <div class="hardware_data">
+                                        <div>
+                                            <h5>ID:</h5>&nbsp;&nbsp;{{v.id}}
+                                        </div>
+                                        <div>
+                                            <h5>硬件名:</h5>
+                                            <h3>{{v.name}}</h3>
+                                        </div>
+                                        <div>
+                                            <h5>硬件状态:</h5>&nbsp;&nbsp;
+                                            <p v-if="v.status">启用</p>
+                                            <p v-if="!v.status">禁用</p>
+                                        </div>
+                                        <div>
+                                            <h5>硬件port:</h5>&nbsp;&nbsp;
+                                            <p>{{v.hardwarePort}}</p>
+                                            <h5>硬件ID:</h5>&nbsp;&nbsp;
+                                            <p>{{v.hardwareID}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mana_c">
+                                        <svg @click="changeHardware(k)" class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-xiugai"></use>
+                                        </svg>&nbsp;&nbsp;
+                                        <svg class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-danseshixintubiao--copy"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
                 <ul id="user_list">
                     <li class="user_l" v-for="(v,k) in userList">
                         <div class="content">
@@ -236,25 +310,25 @@
                                             <h5>ID:</h5>&nbsp;&nbsp;{{v.id}}
                                         </div>
                                         <div>
-                                            <h5>User:</h5>
+                                            <h5>用户:</h5>
                                             <h3>{{v.name}}</h3>
                                         </div>
                                         <div>
-                                            <h5>Status:</h5>&nbsp;&nbsp;<p>{{v.status}}</p>
-                                            <h5>Mana:</h5>&nbsp;&nbsp;<p>{{v.mana}}</p>
+                                            <h5>登录状态:</h5>&nbsp;&nbsp;
+                                            <p v-if="v.status">已登录</p>
+                                            <p v-if="!v.status">未登录</p>
+                                            <h5>是否管理员:</h5>&nbsp;&nbsp;
+                                            <p v-if="v.mana">是</p>
+                                            <p v-if="!v.mana">否</p>
                                         </div>
                                         <div></div>
                                     </div>
                                     <div class="mana_c">
-                                        <svg @click="changeMana(k)" t="1653531073230" class="icon user_mana" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8379" width="24" height="24">
-                                            <path d="M486.4 473.6c-121.6 0-221.867-100.267-221.867-221.867S362.667 29.867 486.4 29.867 708.267 128 708.267 251.733 608 473.6 486.4 473.6z m0-379.733c-87.467 0-157.867 70.4-157.867 157.866S398.933 409.6 486.4 409.6s157.867-70.4 157.867-157.867S571.733 93.867 486.4 93.867z m213.333 900.266h-428.8C160 994.133 70.4 904.533 70.4 793.6v-55.467C70.4 627.2 160 537.6 270.933 537.6H486.4c17.067 0 32 14.933 32 32s-14.933 32-32 32H270.933c-74.666 0-136.533 61.867-136.533 136.533V793.6c0 74.667 61.867 136.533 136.533 136.533h430.934c74.666 0 136.533-61.866 136.533-136.533 0-17.067 14.933-32 32-32s32 14.933 32 32c-2.133 110.933-91.733 200.533-202.667 200.533z" fill="#515151" p-id="8380" data-spm-anchor-id="a313x.7781069.0.i11" class=""></path>
-                                            <path d="M868.267 633.6H654.933c-17.066 0-32-14.933-32-32s14.934-32 32-32h213.334c17.066 0 32 14.933 32 32s-14.934 32-32 32z" fill="#b6d0cf" p-id="8381" data-spm-anchor-id="a313x.7781069.0.i9" class=""></path>
-                                            <path d="M761.6 740.267c-17.067 0-32-14.934-32-32V494.933c0-17.066 14.933-32 32-32s32 14.934 32 32v213.334c0 17.066-14.933 32-32 32z" fill="#b6d0cf" p-id="8382" data-spm-anchor-id="a313x.7781069.0.i8" class=""></path>
-                                        </svg>
-                                        <svg @click="delUser(k)" style="float:right;" t="1653530775776" class="icon user_del" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6552" width="24" height="24">
-                                            <path d="M117.333333 960c-17.066667 0-32-14.933333-32-32 0-232.533333 187.733333-418.133333 420.266667-418.133333 83.2 0 164.266667 25.6 234.666667 72.533333 14.933333 8.533333 23.466667 27.733333 14.933333 42.666667-8.533333 14.933333-27.733333 23.466667-42.666667 14.933333-2.133333-2.133333-4.266667-2.133333-6.4-4.266667-162.133333-110.933333-384-68.266667-492.8 93.866667-42.666667 57.6-64 128-64 198.4 0 17.066667-14.933333 32-32 32z" p-id="6553" data-spm-anchor-id="a313x.7781069.0.i3" class="selected" fill="#515151"></path>
-                                            <path d="M505.6 573.866667c-140.8 0-253.866667-113.066667-253.866667-253.866667S364.8 64 505.6 64s253.866667 113.066667 253.866667 253.866667c0 140.8-115.2 256-253.866667 256z m0-445.866667c-104.533333 0-189.866667 85.333333-189.866667 189.866667s85.333333 189.866667 189.866667 189.866666 189.866667-85.333333 189.866667-189.866666-85.333333-189.866667-189.866667-189.866667zM906.666667 960c-8.533333 0-17.066667-4.266667-23.466667-8.533333l-181.333333-181.333334c-12.8-12.8-12.8-32 0-44.8 12.8-12.8 32-12.8 44.8 0l181.333333 181.333334c12.8 12.8 12.8 32 0 44.8-4.266667 4.266667-12.8 8.533333-21.333333 8.533333z" p-id="6554" data-spm-anchor-id="a313x.7781069.0.i2" class="" fill="#b6d0cf"></path>
-                                            <path d="M725.333333 960c-8.533333 0-17.066667-4.266667-23.466666-8.533333-12.8-12.8-12.8-32 0-44.8l181.333333-179.2c12.8-12.8 32-12.8 44.8-2.133334s12.8 32 2.133333 44.8c0 0 0 2.133333-2.133333 2.133334L746.666667 953.6c-4.266667 4.266667-12.8 6.4-21.333334 6.4z" p-id="6555" data-spm-anchor-id="a313x.7781069.0.i0" class="" fill="#b6d0cf"></path>
+                                        <svg @click="changeMana(k)" class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-tianjiayonghu"></use>
+                                        </svg>&nbsp;&nbsp;
+                                        <svg @click="delUser(k)" class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-shanchuyonghu"></use>
                                         </svg>
                                     </div>
                                 </div>
@@ -282,8 +356,8 @@
                             <div class="glass"></div>
                             <h1 class="ch_n">USER</h1>
                             <div class="change_user">
-                                <div class="change_n">change uname</div>
-                                <div class="change_p">change upassword</div>
+                                <div class="change_n">修改用户名</div>
+                                <div class="change_p">修改密码</div>
                             </div>
                         </div>
                     </div>
@@ -307,7 +381,8 @@
             <div class="glass_cover"></div>
             <div class="userChange">
                 <input type="text" name="" id="change_put" placeholder="请输入" autofocus autocomplete="off">
-                <svg  id="user_c_inp" fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 32 32" width="32px" height="32px"><path d="M 9 6 C 5.6983746 6 3 8.6983746 3 12 L 3 20 C 3 23.301625 5.6983746 26 9 26 C 12.301625 26 15 23.301625 15 20 L 15 12 C 15 8.6983746 12.301625 6 9 6 z M 17 6 L 17 26 L 19 26 L 19 19.320312 L 21.154297 16.283203 L 26.722656 26 L 29 26 L 22.429688 14.486328 L 28.451172 6 L 26 6 L 19 15.863281 L 19 6 L 17 6 z M 9 8 C 11.220375 8 13 9.7796254 13 12 L 13 20 C 13 22.220375 11.220375 24 9 24 C 6.7796254 24 5 22.220375 5 20 L 5 12 C 5 9.7796254 6.7796254 8 9 8 z"/></svg>
+                <svg id="user_c_inp" fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px">
+                    <path d="M 9 6 C 5.6983746 6 3 8.6983746 3 12 L 3 20 C 3 23.301625 5.6983746 26 9 26 C 12.301625 26 15 23.301625 15 20 L 15 12 C 15 8.6983746 12.301625 6 9 6 z M 17 6 L 17 26 L 19 26 L 19 19.320312 L 21.154297 16.283203 L 26.722656 26 L 29 26 L 22.429688 14.486328 L 28.451172 6 L 26 6 L 19 15.863281 L 19 6 L 17 6 z M 9 8 C 11.220375 8 13 9.7796254 13 12 L 13 20 C 13 22.220375 11.220375 24 9 24 C 6.7796254 24 5 22.220375 5 20 L 5 12 C 5 9.7796254 6.7796254 8 9 8 z" /></svg>
             </div>
         </section>
     </section>
@@ -346,12 +421,13 @@
         </div>
     </section>
 </body>
+<script src="./font/iconfont.js"></script>
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script type="text/javascript" src="./js/vue.min.js"></script>
 <script type="text/javascript" src="./js/mqtt.min.js"></script>
 <script type="text/javascript" src="./js/pxmu.min.js"></script>
-<!-- <script type="text/javascript" src="./js/template-web.js"></script> -->
 <script type="text/javascript" src="./js/control.js"></script>
+<script type="text/javascript" src="./js/dataTrans.js"></script>
 <script type="text/javascript" src="./js/md5.js"></script>
 
 </html>

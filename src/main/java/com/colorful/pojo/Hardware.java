@@ -4,7 +4,16 @@ public class Hardware {
     private int id;
     private String name;
     private String hardwareID;
+    private int hardwarePort;
     private boolean status;
+
+    public int getHardwarePort() {
+        return hardwarePort;
+    }
+
+    public void setHardwarePort(int hardwarePort) {
+        this.hardwarePort = hardwarePort;
+    }
 
     public int getId() {
         return id;
@@ -44,6 +53,7 @@ public class Hardware {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", hardwareID='" + hardwareID + '\'' +
+                ", hardwarePort=" + hardwarePort +
                 ", status=" + status +
                 '}';
     }
