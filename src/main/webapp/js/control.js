@@ -125,8 +125,13 @@ $(function() {
         }
     });
 
-    //添加硬件
-
+    // //硬件实现控制
+    // class HardwareControl {
+    //     constructor() {
+            
+    //     }
+    // }
+    // new HardwareControl();
 
     //管理页面切换
     class ManaPage {

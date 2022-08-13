@@ -13,6 +13,10 @@
         insert into hardware_data (name,hardware_id,hardware_port,status)
         value (#{name},#{hardware_id},#{hardware_port},1);
     </insert>
+    <update id="changeHardware">
+        update hardware_data set name = #{name}, hardware_id =  #{hardware_id}, hardware_port = #{hardware_port}
+        where id = #{id};
+    </update>
     <select id="selectAll" resultMap="hardwareMap" resultType="com.colorful.pojo.Hardware">
         select * from hardware_data;
     </select>

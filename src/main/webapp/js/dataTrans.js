@@ -28,6 +28,7 @@ var Mana = new Vue({
                 url: "/hardware/selectAll",
                 success(res) {
                     that.HardwareList = arrayh = JSON.parse(res);
+
                     let pattern1 = /^AGSW/;
                     let pattern2 = /^SPSW/;
                     let aa = arrayh.filter((o, i) => {
@@ -36,12 +37,35 @@ var Mana = new Vue({
                     let bb = arrayh.filter((o, i) => {
                         return pattern2.test(o.hardwareID);
                     });
+                    that.hardwareList[0] = [];
+                    that.hardwareList[1] = [];
                     for (let i = 0; i < aa.length; i++) {
                         that.hardwareList[0].push(aa[i]);
                     }
                     for (let i = 0; i < bb.length; i++) {
                         that.hardwareList[1].push(bb[i]);
                     }
+                }
+            });
+        },
+        spswControl(k, s) {
+            console.log(`${k}-----${s}`)
+            let that = this;
+            let hardwareIP = "http://192.168.2.178"
+            storage.save("hardwareIP", hardwareIP); //储存函数
+
+            storage.retrieve("hardwareIP") //读取函数
+            $.ajax({
+                type: "GET",
+                url: storage.retrieve("hardwareIP") + "/spswControl",
+                data: {
+                    name: that.HardwareList[k + that.hardwareList[0].length].name,
+                    hardwareID: that.HardwareList[k + that.hardwareList[0].length].hardwareID,
+                    hardwarePort: that.HardwareList[k + that.hardwareList[0].length].hardwarePort,
+                    instruction: s,
+                },
+                success(res) {
+                    warn("发送成功");
                 }
             });
         },
@@ -52,7 +76,7 @@ var Mana = new Vue({
                     type: "GET",
                     url: "/user/deleteUser",
                     data: {
-                        id: k + 1,
+                        id: that.userList[k].id,
                     },
                     success(res) {
                         that.userList = JSON.parse(res);
@@ -91,16 +115,16 @@ var Mana = new Vue({
         },
         addHardware() {
             let that = this;
-            if ($(".h_inp")[0].value.trim() != "" &&
-                $(".h_inp")[1].value.trim() != "" &&
-                $(".h_inp")[2].value.trim() != "") {
+            if ($(".addh_inp")[0].value.trim() != "" &&
+                $(".addh_inp")[1].value.trim() != "" &&
+                $(".addh_inp")[2].value.trim() != "") {
                 $.ajax({
                     type: "POST",
                     url: "/hardware/addHardware",
                     data: {
-                        name: $(".h_inp")[0].value,
-                        hardware_id: $(".h_inp")[2].value,
-                        hardware_port: $(".h_inp")[1].value,
+                        name: $(".addh_inp")[0].value,
+                        hardware_id: $(".addh_inp")[2].value,
+                        hardware_port: $(".addh_inp")[1].value,
                     },
                     success(res) {
                         warn("添加成功")
@@ -124,7 +148,7 @@ var Mana = new Vue({
             $(".h_inp")[2].value = this.HardwareList[k].hardwareID;
             $(".changeH_sub").on("click", () => {
                 $(".changeH").hide();
-
+                $(".glass_cover").hide();
                 if ($(".h_inp")[0].value.trim() != "" &&
                     $(".h_inp")[1].value.trim() != "" &&
                     $(".h_inp")[2].value.trim() != "") {
@@ -132,18 +156,52 @@ var Mana = new Vue({
                         type: "POST",
                         url: "/hardware/changeHardware",
                         data: {
+                            id: that.HardwareList[k].id,
                             name: $(".h_inp")[0].value,
                             hardware_id: $(".h_inp")[2].value,
                             hardware_port: $(".h_inp")[1].value,
                         },
                         success(res) {
-                            warn("添加成功")
+                            warn("修改成功")
                             that.onloadDo();
                         }
                     });
                 } else {
                     warn("有输入框未填写哦")
                 }
+            });
+        },
+        changeStatus(k) {
+            let that = this;
+            conf("请问是否要更改此硬件的状态", () => {
+                $.ajax({
+                    type: "POST",
+                    url: "/hardware/changeStatus",
+                    data: {
+                        id: that.HardwareList[k].id,
+                        status: !that.HardwareList[k].status,
+                    },
+                    success(res) {
+                        warn("修改成功")
+                        that.onloadDo();
+                    }
+                });
+            });
+        },
+        delHardware(k) {
+            let that = this;
+            conf("请问是否要删除此硬件", () => {
+                $.ajax({
+                    type: "POST",
+                    url: "/hardware/delHardware",
+                    data: {
+                        id: that.HardwareList[k].id,
+                    },
+                    success(res) {
+                        warn("删除成功")
+                        that.onloadDo();
+                    }
+                });
             });
         }
     }

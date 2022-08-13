@@ -27,4 +27,32 @@ public class hardwareServlet extends baseServlet {
         service.addHardware(name, hardware_id, hardware_port);
         response.getWriter().write("res");
     }
+
+    public void changeHardware(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String hardware_id = request.getParameter("hardware_id");
+        int hardware_port = Integer.parseInt(request.getParameter("hardware_port"));
+        service.changeHardware(id,name, hardware_id, hardware_port);
+        response.getWriter().write("res");
+    }
+
+    public void changeStatus(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String st = request.getParameter("status");
+        byte status = 1;
+        if("false".equals(st)) {
+            status = 0;
+        }
+        service.changeStatus(id, status);
+        response.getWriter().write("res");
+    }
+
+    public void delHardware(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        service.delHardware(id);
+        service.idDel();
+        service.idSort();
+        response.getWriter().write("res");
+    }
 }

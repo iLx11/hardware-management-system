@@ -21,9 +21,11 @@ public class test {
 //        userMapper userM = sqls.getMapper(userMapper.class);
         hardwareMapper hardwareM = sqls.getMapper(hardwareMapper.class);
 //        userM.changeUserStatus((byte) 1,"test6");
-//        System.out.println(userM.selectAll());
+//        System.out.println(hardwareM.selectAll());
         System.out.println();
-        hardwareM.addHardware("ll","sd",16);
+        int u = 8;
+        hardwareM.idDel();
+        hardwareM.idSort();
 //        userM.changeUser(1,(byte) 0,"289dff07669d7a23de0ef88d2f7129e7","test");
 //        System.out.println(userM.selectByName("l"));
 //        userM.addUser("123","dsfsd");

@@ -28,4 +28,44 @@ public class hardwareServiceImp implements hardwareService {
         hardwareMapper.addHardware(name,hardware_id,hardware_port);
         sqlSession.close();
     }
+
+    @Override
+    public void changeHardware(int id, String name, String hardware_id, int hardware_port) {
+        SqlSession sqlSession = factory.openSession(true);
+        hardwareMapper hardwareMapper = sqlSession.getMapper(hardwareMapper.class);
+        hardwareMapper.changeHardware(id,name,hardware_id,hardware_port);
+        sqlSession.close();
+    }
+
+    @Override
+    public void changeStatus(int id, byte status) {
+        SqlSession sqlSession = factory.openSession(true);
+        hardwareMapper hardwareMapper = sqlSession.getMapper(hardwareMapper.class);
+        hardwareMapper.changeStatus(id,status);
+        sqlSession.close();
+    }
+
+    @Override
+    public void delHardware(int id) {
+        SqlSession sqlSession = factory.openSession(true);
+        hardwareMapper hardwareMapper = sqlSession.getMapper(hardwareMapper.class);
+        hardwareMapper.delHardware(id);
+        sqlSession.close();
+    }
+
+    @Override
+    public void idDel() {
+        SqlSession sqlSession = factory.openSession(true);
+        hardwareMapper hardwareMapper = sqlSession.getMapper(hardwareMapper.class);
+        hardwareMapper.idDel();
+        sqlSession.close();
+    }
+
+    @Override
+    public void idSort() {
+        SqlSession sqlSession = factory.openSession(true);
+        hardwareMapper hardwareMapper = sqlSession.getMapper(hardwareMapper.class);
+        hardwareMapper.idSort();
+        sqlSession.close();
+    }
 }
