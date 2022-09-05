@@ -95,7 +95,7 @@
                                         <h4>success</h4>
                                     </h1>
                                 </div>
-                                <div class="analog led_analog">模拟调整</div>
+                                <div @click="analogShow(k)" class="analog led_analog">模拟调整</div>
                             </div>
                             <div class="switch led_switch">
                                 <div class="o_n led_on ">
@@ -129,8 +129,8 @@
                                         </h4>
                                     </h1>
                                 </div>
-                                <div @click="spswControl(k,'open')" class="con_o door_o">&nbsp;&nbsp;open</div>
-                                <div @click="spswControl(k,'close')" class="con_c door_c">close&nbsp;&nbsp;</div>
+                                <div @click="SPSWControl(k,'open')" class="con_o door_o">&nbsp;&nbsp;open</div>
+                                <div @click="SPSWControl(k,'close')" class="con_c door_c">close&nbsp;&nbsp;</div>
                             </div>
                         </div>
                     </div>

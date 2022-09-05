@@ -48,7 +48,15 @@ var Mana = new Vue({
                 }
             });
         },
-        spswControl(k, s) {
+        analogShow(k) {
+            if ($(".bar").eq(k)[0].style.display == "block") {
+                $(".bar").eq(k).fadeOut(100);
+            } else {
+                $(".bar").eq(k).fadeIn(100);
+            }
+
+        },
+        SPSWControl(k, s) {
             console.log(`${k}-----${s}`)
             let that = this;
             let hardwareIP = "http://192.168.2.178"

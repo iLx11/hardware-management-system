@@ -10,8 +10,10 @@
 #include <Servo.h>                  //加载舵机库     
 #include <ArduinoJson.h>//使用JSON-v5版的库
 #include "DHT.h"        //加载温湿度库
-//---------------------------------------------------------------------
+#include "URLCode.h"
+
 //定义对象
+//---------------------------------------------------------------------
 const char *ssid = "webcontrol";             //AP的SSID（WiFi名字）
 const char *password = "12345678";            //AP的密码
 const char* mqtt_server = "bemfa.com";          //MQTT服务器IP
@@ -25,11 +27,13 @@ Servo myservo2;
 #define DHTTYPE DHT11   // DHT 11
 DHT dht(DHTPIN, DHTTYPE);
 
+//wifi对象与DNS定义
 ESP8266WiFiMulti wifiMulti;     // 建立ESP8266WiFiMulti对象,对象名称是 'wifiMulti'
 ESP8266WebServer esp8266_server(80);    // 建立网络服务器对象，该对象用于响应HTTP请求。监听端口（80）
 const byte DNS_PORT = 53; //DNS服务端口号，一般为53
 DNSServer dnsServer;
 
+//MQTT定义
 const char* ESP8266_ID = "75ee4e39450943889749e9924e3a982c";                 //自定义ID
 const char* ESP8266_user = "75ee4e39450943889";                   //用户名
 const char* ESP8266_password = "wulianwang";              //密码
@@ -38,12 +42,10 @@ const char* ESP8266_sub = "banzi002";                 //订阅主题（对方的
 WiFiClient espClient;
 PubSubClient client(espClient);                      //定义客户端对象
 
-
+//u8g2 OLED库定义
 #define SCL 5
 #define SDA 4
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /*clock=*/SCL, /*data=*/SDA, /*reset=*/U8X8_PIN_NONE);
-
-
 
 //UDP定义
 IPAddress sta_client;                        //保存sta设备的ip地址
@@ -52,6 +54,11 @@ unsigned int remoteUdp = 4321;     //发送端口
 unsigned int remoteUdp1 = 4322;     //发送端口
 char comPacket[255];                 //数据缓存
 WiFiUDP Udp;                        //定义udp
+
+//URL对象定义
+URLCode url;
+
+
 //定义引脚
 //---------------------------------------------------------------------
 
@@ -85,6 +92,7 @@ void hardwareInit() {
 
 //---------------------------------------------------------------------
 void setup() {
+
   u8g2.begin();
   u8g2.enableUTF8Print(); // enable UTF8 support for the Arduino print() function
 
@@ -231,7 +239,6 @@ void usartEvent() {
   }
   while (Serial.read() >= 0) {} //清除串口缓存
 }
-
 ///*数据解析*/
 void UserData(String content) {
   StaticJsonDocument<200> doc;
@@ -270,23 +277,20 @@ void udpDo() {
     if (len > 0)
     {
       comPacket[len] = 0;//清空缓存
-      Serial.printf("UDP数据包内容为: %s\n", comPacket);//向串口打印信息
-
+        Serial.printf("UDP数据包内容为: %s\n", 
       //strcmp函数是string compare(字符串比较)的缩写，用于比较两个字符串并根据比较结果返回整数。
       //基本形式为strcmp(str1,str2)，若str1=str2，则返回零；若str1<str2，则返回负数；若str1>str2，则返回正数。
       if (strcmp(comPacket, "LED_OFF") == 0) // 命令LED_OFF
       {
-        //        digitalWrite(LED_BUILTIN, HIGH); // 熄灭LED
-        //        sendBack("LED has been turn off\n");
+
       }
       else if (strcmp(comPacket, "LED_ON") == 0) //如果收到LED_ON
       {
-        //        digitalWrite(LED_BUILTIN, LOW); // 点亮LED
-        //        sendBack("LED has been turn on\n");
-      }\
+
+      }
       else // 如果指令错误，调用sendCallBack
       {
-        //        sendBack("Command Error!");
+
       }
     }
   }
@@ -357,39 +361,48 @@ void MQTT_Handler(String data)//数据处理函数，执行对接收数据的分
 }
 //MQTT部分结束
 //==================================================================================================
+
 //处理用户get请求
 //---------------------------------------------------------------------
 void handleGet() {
-  esp8266_server.on("/spswControl", spswControl);
+  esp8266_server.on("/SPSWControl", SPSWControl);
+  esp8266_server.on("/AGSWControl", AGSWControl);
   esp8266_server.onNotFound(handleUserRequest); // 处理其它网络资源请求
 }
 //处理用户列表函数
 //---------------------------------------------------------------------
-void spswControl() {
+void SPSWControl() {
   String name = esp8266_server.arg("name");
   String hardwareID = esp8266_server.arg("hardwareID");
   String hardwarePort = esp8266_server.arg("hardwarePort");
   String instruction = esp8266_server.arg("instruction");
-  ledShow(hardwarePort);
-  Serial.println(hardwarePort);
+  String mes = esp8266_server.arg("message");
+  Serial.println(mes);
+  url.urlcode = mes;
+  url.urldecode();
+  
+  Serial.println(url.strcode);
+  ledShow(url.strcode);
+//  配置端口
   int port = hardwarePort.toInt();
   pinMode(port, OUTPUT);
+  
   if (instruction == "open") {
     digitalWrite(port, 1);
     if(digitalRead(port)) {
        ledShow("打开");
     Serial.println("打开");
     }
-   
   } else {
     digitalWrite(port, 0);
     if(!digitalRead(port)) {
        ledShow("关闭");
     Serial.println("关闭");   
     }
-     
   }
 }
+
+
 void userver() {
   String xx = "";
   String user_json = esp8266_server.arg("json");
