@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./css/Admin.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
+    <title>管理系统</title>
+</head>
+
+<body>
+    <div class="bg"></div>
+    <section class="constructor" id="hardware_sys_PC">
+        <div class="header">
+            <div class="sysName">
+                HardWareSystem
+            </div>
+            <div class="MQTTconnect">
+                <input type="text" placeholder="MQTT_address">
+            </div>
+            <div class="exit">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-tuichu"></use>
+                </svg>
+            </div>
+            <div class="user">
+                _iLx1_
+            </div>
+        </div>
+        <!------------------------------------------------------------>
+        <section class="content">
+            <div class="nav">
+                <div>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-zhuye"></use>
+                    </svg>
+                </div>
+                <div>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-yonghu"></use>
+                    </svg>
+                </div>
+                <div>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-bangongyingjian"></use>
+                    </svg>
+                </div>
+                <div>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-Rise"></use>
+                    </svg>
+                </div>
+            </div>
+            <!------------------------------------------------------------>
+            <div class="component">
+                <!-- 控制页面 -->
+                <!------------------------------------------------------------>
+                <section class="controlPage">
+                    <div class="headData">
+                        <div class="contentData">
+                            <div class="weather">
+                                <h1>
+                                    <span>Sun</span>
+                                    <p></p>
+                                </h1>
+                                <span>Weather</span>
+                            </div>
+                            <div class="temp">
+                                <h1>
+                                    <span>26</span>
+                                    <p>℃</p>
+                                </h1>
+                                <span>Temperature</span>
+                            </div>
+                            <div class="hum">
+                                <h1>
+                                    <span>30</span>
+                                    <p>%RH</p>
+                                </h1>
+                                <span>humidity</span>
+                            </div>
+                        </div>
+                        <div class="sysData">
+                            <div>
+                                <h1>20</h1>
+                                <span>硬件数量</span>
+                            </div>
+                            <div>
+                                <h1>20</h1>
+                                <span>用户数量</span>
+                            </div>
+                            <div>
+                                <h1>未连接</h1>
+                                <span>MQTT连接状态</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="HWcontrol">
+                        <!-- 模拟控制 -->
+                        <!------------------------------------------------------------>
+                        <div class="ANcontrol" v-for="(v,k) in AnaList">
+                            <div class="C_t">
+                                <div class="ct">
+                                    <div class=" open">
+                                        <div class="situation">
+                                            <h1>{{v.name}}</h1>
+                                            <h4 class="state">Close </h4>
+                                            <h4>success</h4>
+                                        </div>
+                                        <!-- <div @click="analogShow(k)" class="analog led_analog">模拟调整</div> -->
+                                    </div>
+                                    <div class="switch">
+                                        <div class="o_n">
+                                            <h4>打开</h4>
+                                        </div>
+                                        <div class="o_ff">
+                                            <h4>关闭</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <section class="bar">
+                                    <input class="bar-input analogInp" type="range" min="0" max="100" value="100">
+                                    <div class="ind">
+                                        100%
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                        <!-- 简单控制 -->
+                        <!------------------------------------------------------------>
+                        <div class="SPcontrol" v-for="(v,k) in SpList">
+                            <div class="ct_sp">
+                                <div class="con_open">
+                                    <div class="con_situation">
+                                        <h1>{{v.name}}</h1>
+                                        <h4 class="state">Close </h4>
+                                        <h4>success</h4>
+                                    </div>
+                                    <div @click="SPSWControl(k,'open')" class="con_o">&nbsp;&nbsp;open</div>
+                                    <div @click="SPSWControl(k,'close')" class="con_c">close&nbsp;&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- 用户列表界面 -->
+                <!------------------------------------------------------------>
+                <section class="userPage">
+                    <div class="userHeader">
+                        <h1>User Page</h1>
+                    </div>
+                    <div class="userListContent">
+                        <ul class="user_list">
+                            <li v-for="(v,k) in userList">
+                                <div class="list-content">
+                                    <div class="user_data">
+                                        <div>
+                                            <h5>ID:</h5>&nbsp;&nbsp;{{v.id}}
+                                        </div>
+                                        <div>
+                                            <h5>用户:</h5>
+                                            <p>{{v.name}}</p>
+                                        </div>
+                                        <div>
+                                            <h5>登录状态:</h5>&nbsp;&nbsp;
+                                            <p v-if="v.status">已登录</p>
+                                            <p v-if="!v.status">未登录</p>
+                                        </div>
+                                        <div>
+                                            <h5>是否管理员:</h5>&nbsp;&nbsp;
+                                            <p v-if="v.mana">是</p>
+                                            <p v-if="!v.mana">否</p>
+                                        </div>
+                                        |
+                                    </div>
+                                    <div class="mana_c">
+                                        <svg @click="changeMana(k)" class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-tianjiayonghu"></use>
+                                        </svg>&nbsp;&nbsp;
+                                        <svg @click="delUser(k)" class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-shanchuyonghu"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <!-- 硬件列表界面 -->
+                <!------------------------------------------------------------>
+                <section class="hardwarePage">
+                    <div class="hardwareHeader">
+                        hardware Page
+                    </div>
+                    <div class="hardwareListContent">
+                    </div>
+                </section>
+                <!-- 图表列表界面 -->
+                <!------------------------------------------------------------>
+                <section class="chartPage">
+                    <div class="chartHeader">
+                        chart Page
+                    </div>
+                    <div class="chartListContent"></div>
+                </section>
+            </div>
+            <!------------------------------------------------------------>
+            <div class="mqttMess">
+                <div class="mHeader">
+                    MQTT Message
+                </div>
+                <div class="mMessage">
+                    <div class="mqtt_mes">
+                    </div>
+                </div>
+                <section>
+                    <div class="MQTTcontent">
+                        <div class="mqttBody">
+                            <div class="mqtt_trans">
+                                <div class="mqtt_t">
+                                    <div class="mqtt_pub">
+                                        <input type="text" name="" class="m_pub" placeholder="pub_主题" id="pub_topic">
+                                        <input type="text" name="" class="m_pub" placeholder="pub_内容" id="pub_content">
+                                    </div>
+                                    <div class="mqtt_send">SEND</div>
+                                </div>
+                                <div class="fenge"></div>
+                                <div class="mqtt_sub">
+                                    <input type="text" name="" placeholder="sub_主题" id="sub_topic">
+                                    <div class="mqtt_s_send">
+                                        <div class="mqtt_s" id="sub_t">SUB</div>
+                                        <div class="mqtt_s" id="unsub_t">UNSUB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </section>
+</body>
+<script src="./font/iconfontPC.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/vue.min.js"></script>
+<script type="text/javascript" src="./js/mqtt.min.js"></script>
+<script type="text/javascript" src="./js/pxmu.min.js"></script>
+<script type="text/javascript" src="./js/AdminData.js"></script>
+<script type="text/javascript" src="./js/Admin.js"></script>
+<script type="text/javascript" src="./js/md5.js"></script>
+
+</html>

@@ -1,29 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.icon {
-    width: 1.8em;
-    height: 1.8em;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    overflow: hidden;
-}
-
-a,
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: none;
-}
-
-li {
-    list-style-type: none;
-}
-
 .constructor {
     display: none;
 }
@@ -161,7 +135,7 @@ header {
 .C_t {
     /*box-shadow: 0 0 0 2px darkgrey;*/
     /*border: 1.7px solid rgba(211, 215, 212, 0.8);*/
-    box-shadow: 2px 6px 15px 1px rgba(211, 215, 212, 0.95);
+    box-shadow: 2px 6px 15px 1px rgba(211, 215, 212, 0.8);
     border-radius: 15px;
     padding: 0.5em;
     margin-bottom: 0.9em;
@@ -183,19 +157,6 @@ header {
     box-shadow: 2px 6px 20px 5px rgba(211, 215, 212, 0.9);
     border-radius: 13px;
     position: relative;
-}
-
-.glass {
-    height: 100%;
-    width: 100%;
-    background: rgba(226, 225, 223, 0.1);
-    background-size: cover;
-    background-position: center;
-    position: absolute;
-    -webkit-filter: blur(24px);
-    filter: blur(24px);
-    overflow: hidden;
-    z-index: -1;
 }
 
 .situation {
@@ -220,6 +181,8 @@ header {
     border-radius: 0 0 13px 13px;
     background: rgba(161, 163, 166, 0.7);
     z-index: 3;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
 
 }
 
@@ -254,44 +217,52 @@ header {
     cursor: pointer;
 
 }
-
+/*模拟调整框*/
 .bar {
+    height: 2.5em;
     display: flex;
     justify-content: center;
-    flex-flow: row wrap;
+    align-items: center;
     display: none;
+    position: relative;
 }
 
 .bar-input {
     appearance: none;
-    width: 92%;
+    width: 96%;
     border-radius: 10px;
     margin-top: 1em;
-
+    background: rgba(51, 51, 51, 0.2);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.bar-input::fill-upper {
+.bar-input:fill-upper {
 
-    background: linear-gradient(to right, #1ab1e2 0%, #1ab1e2 80%, #eee 80%, #eee);
+    /*background: linear-gradient(to right, #1ab1e2 0%, #1ab1e2 80%, #eee 80%, #eee);*/
+     background: rgba(0, 0, 0, 0.2);
 
 }
 
 .ind {
-    width: 92%;
+    width: 91.5%;
+    margin: 0 auto;
+    transform: translateY(27px);
 }
 
 .indicator {
     box-shadow: 0px 15px 35px rgba(236, 0, 113, 0.3);
     background: #ec0071;
     width: 6vh;
-    height: 6vh;
+    height: 3vh;
     color: white;
     -webkit-transform: translateY(9.6vh);
     transform: translateY(9.6vh);
     text-align: center;
     font-size: 2vh;
     font-weight: 900;
-    line-height: 8vh;
+    /*line-height: 8vh;*/
     margin-left: 100%;
     /*transform: translateY(15px);*/
     transform: translate(-3vh, 15px);
@@ -308,8 +279,10 @@ header {
     width: 4vh;
     height: 4vh;
     z-index: -1;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
+    clip-path: polygon(50% 0%, 120% 100%, -20% 100%);
+    transform: translateY(-13px);
+/*    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);*/
 }
 
 /*公用结构结束*/
@@ -343,38 +316,36 @@ header {
 .content_data {
     width: 100%;
     height: 35%;
-    z-index: 1;
-    padding-left: 1em;
     position: absolute;
-    flex-flow: row wrap;
-    justify-content: center;
     bottom: 30%;
     background-color: rgba(231, 238, 238, 0.9);
 
 }
-
-.content_data h3 {
+.contentData {
+    width: 90%;
+    height: 100%;
     margin: 0 auto;
-    width: 85%;
-    display: inline-block;
     display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+.contentData div {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    flex-flow: row nowrap;
     justify-content: space-between;
+    align-items: center;
 }
-
-.content_data p {
-    margin-left: -3em;
-    font-weight: 300;
-
+.contentData div div {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
 }
-
-#hum {
-    transform: translateX(2em);
-}
-
-#tem {
-    transform: translateX(2em);
-}
-
 .mqtt_connect {
     width: 86%;
     display: flex;
@@ -476,23 +447,6 @@ header {
 /*头部数据结束*/
 /*-----------------------------------------------------------*/
 
-
-
-/*控制灯光开始*/
-/*-----------------------------------------------------------*/
-.led_analog {
-    color: white;
-    cursor: pointer;
-    text-align: center;
-}
-
-/*控制窗户开始*/
-/*-----------------------------------------------------------*/
-.wind_analog {
-    color: white;
-    cursor: pointer;
-    text-align: center;
-}
 
 /*简单控制开始*/
 /*-----------------------------------------------------------*/
@@ -613,6 +567,7 @@ svg:active {
 
 /*mqtt_m开始*/
 /*-----------------------------------------------------------*/
+
 .kalada_m_m {
     display: none;
 }

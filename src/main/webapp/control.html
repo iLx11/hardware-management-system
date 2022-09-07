@@ -6,6 +6,7 @@
     <meta name="viewport" content="width = device-width,initial-scale = 1.0">
     <title>控制页面</title>
     <link rel="stylesheet" type="text/css" href="./css/control.css">
+    <link rel="stylesheet" type="text/css" href="./css/common.css">
     <link rel="shortcut icon" href="#" />
 </head>
 
@@ -41,14 +42,29 @@
                                     </h1>
                                 </div>
                                 <div class="content_data">
-                                    <h3>weather : <p>Sun</p>
-                                    </h3>
-                                    <h3>temperature :<p id="tem">25</p>
-                                        <p>℃</p>
-                                    </h3>
-                                    <h3>humidity: <p id="hum">32</p>
-                                        <p>%RH</p>
-                                    </h3>
+                                    <div class="contentData">
+                                        <div class="weather">
+                                            <h3>Weather:</h3>
+                                            <div>
+                                                <span></span>
+                                                <p>Sun</p>
+                                            </div>
+                                        </div>
+                                        <div class="temp">
+                                            <h3>Temperature:</h3>
+                                            <div>
+                                                <span>26</span>
+                                                <p>℃</p>
+                                            </div>
+                                        </div>
+                                        <div class="hum">
+                                            <h3>humidity:</h3>
+                                            <div>
+                                                <span>30</span>
+                                                <p>%RH</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="headData">
                                     <div class="mqtt_connect">
@@ -89,7 +105,6 @@
                     <div class="C_t">
                         <div class="ct ab">
                             <div class=" open led_open">
-                                <div class="glass"></div>
                                 <div class="situation led_situation">
                                     <h1>{{v.name}}:&nbsp;<div class="state">Close </div><br>
                                         <h4>success</h4>
@@ -107,7 +122,7 @@
                             </div>
                         </div>
                         <section class="bar">
-                            <input class="bar-input analogInp" type="range" min="0" max="100" value="100">
+                            <input class="bar-input analogInp" type="range" min="0" max="100" value="100" >
                             <div class="ind">
                                 <div class="indicator">100%</div>
                             </div>
@@ -362,8 +377,8 @@
                             <div class="glass"></div>
                             <h1 class="ch_n">USER</h1>
                             <div class="change_user">
-                                <div class="change_n">修改用户名</div>
-                                <div class="change_p">修改密码</div>
+                                <div class="change_n" @click="dataTransfer(1)">修改用户名</div>
+                                <div class="change_p" @click="dataTransfer(2)">修改密码</div>
                             </div>
                         </div>
                     </div>
@@ -379,7 +394,7 @@
                 <div class="content">
                     <div class="C_t">
                         <div class="ct">
-                            <div class="exit">EXIT</div>
+                            <div class="exit" @click="exit()">EXIT</div>
                         </div>
                     </div>
                 </div>

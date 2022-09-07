@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@font-face {
+    font-family: "youshe";
+    src: url("../font/YSHaoShenTi.ttf");
+}
+.icon {
+    width: 1.8em;
+    height: 1.8em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+a,
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+li {
+    list-style-type: none;
+}

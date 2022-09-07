@@ -3,11 +3,13 @@ $(function() {
         $('.load').delay(800).fadeOut(100);
         $('.kalada').delay(800).fadeIn(400);
         // 获取设备高度
-        var clientH = document.documentElement.clientHeight;
+        let clientH = document.documentElement.clientHeight;
         document.querySelector(".sub").style.height = clientH;
         $('.sub').css("height", clientH);
+        
     });
     $('#sub').click(() => {
+        let clientW = document.documentElement.clientWidth;
         if ($('#user').val() != '' && $('#password').val() != '') {
             $.ajax({
                 type: "POST",
@@ -21,6 +23,7 @@ $(function() {
                     if (res == "Successful") {
                         warn("验证成功");
                         window.location.href = "/control.html?user=" + $('#user').val();
+                        if (clientW > 600) { window.location.href = "/Admin.html?user=" + $('#user').val();}
                     } else {
                         warn("验证失败");
                         setTimeout(() => {

@@ -1,11 +1,9 @@
 var Mana = new Vue({
-    el: '#hardware_sys',
+    el: '#hardware_sys_PC',
     data: {
         userList: [],
-        hardwareList: [
-            [],
-            []
-        ],
+        AnaList: [],
+        SpList: [],
         HardwareList: [],
     },
     mounted() {
@@ -29,7 +27,6 @@ var Mana = new Vue({
                 url: "/hardware/selectAll",
                 success(res) {
                     that.HardwareList = arrayh = JSON.parse(res);
-
                     let pattern1 = /^AGSW/;
                     let pattern2 = /^SPSW/;
                     let aa = arrayh.filter((o, i) => {
@@ -38,13 +35,13 @@ var Mana = new Vue({
                     let bb = arrayh.filter((o, i) => {
                         return pattern2.test(o.hardwareID);
                     });
-                    that.hardwareList[0] = [];
-                    that.hardwareList[1] = [];
+                    that.AnaList = [];
+                    that.SpList = [];
                     for (let i = 0; i < aa.length; i++) {
-                        that.hardwareList[0].push(aa[i]);
+                        that.AnaList.push(aa[i]);
                     }
                     for (let i = 0; i < bb.length; i++) {
-                        that.hardwareList[1].push(bb[i]);
+                        that.SpList.push(bb[i]);
                     }
                 }
             });
@@ -77,9 +74,9 @@ var Mana = new Vue({
                 type: "GET",
                 url: storage.retrieve("hardwareIP") + "/spswControl",
                 data: {
-                    name: that.HardwareList[k + that.hardwareList[0].length].name,
-                    hardwareID: that.HardwareList[k + that.hardwareList[0].length].hardwareID,
-                    hardwarePort: that.HardwareList[k + that.hardwareList[0].length].hardwarePort,
+                    name: that.HardwareList[k + that.AnaList.length].name,
+                    hardwareID: that.HardwareList[k + that.AnaList.length].hardwareID,
+                    hardwarePort: that.HardwareList[k + that.AnaList.length].hardwarePort,
                     instruction: s,
                 },
                 success(res) {
