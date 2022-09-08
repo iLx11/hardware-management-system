@@ -13,4 +13,10 @@ $(function() {
         }
     }
     new PageChange(['.controlPage', '.userPage', '.hardwarePage', '.chartPage']);
+
+    // 遮罩图层
+    $('.cover').on('click', () =>{
+    	$(this).hide();
+    	$('.changeH').hide();
+    });
 });

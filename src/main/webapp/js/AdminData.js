@@ -57,7 +57,7 @@ var Mana = new Vue({
                     $('.indicator').eq(k).html(barIn.value + '%').stop().animate({ "marginLeft": barIn.value + '%' }, 600);
                 });
                 barIn.addEventListener('touchmove', function() {
-                    $('.indicator').eq(k).html(barIn.value + '%').css( "marginLeft", barIn.value + '%');
+                    $('.indicator').eq(k).html(barIn.value + '%').css("marginLeft", barIn.value + '%');
                 });
             }
 
@@ -94,15 +94,15 @@ var Mana = new Vue({
         },
         dataTransfer(a) {
             let that = this;
-            $('.userChange').show();
-            $('.glass_cover').show().on("click", () => {
-                $('.userChange').hide();
-                $('.glass_cover').hide();
+            $('.userChangeBox').show();
+            $('.cover').show().on("click", () => {
+                $('.userChangeBox').hide();
+                $('.cover').hide();
             });
             $('.bottom_nav').hide();
             $('#user_c_inp').on("click", () => {
-                $('.userChange').hide();
-                $('.glass_cover').hide();
+                $('.userChangeBox').hide();
+                $('.cover').hide();
                 $('.bottom_nav').show();
                 if ($('#change_put').val().trim() != "") {
                     if (a == 1) {
@@ -178,59 +178,76 @@ var Mana = new Vue({
         },
         addHardware() {
             let that = this;
-            if ($(".addh_inp")[0].value.trim() != "" &&
-                $(".addh_inp")[1].value.trim() != "" &&
-                $(".addh_inp")[2].value.trim() != "") {
-                $.ajax({
-                    type: "POST",
-                    url: "/hardware/addHardware",
-                    data: {
-                        name: $(".addh_inp")[0].value,
-                        hardware_id: $(".addh_inp")[2].value,
-                        hardware_port: $(".addh_inp")[1].value,
-                    },
-                    success(res) {
-                        warn("添加成功")
-                        that.onloadDo();
-                    }
-                });
-            } else {
-                warn("有输入框未填写哦")
+            $(".changeH").show();
+            $(".cover").show().on("click", () => {
+                $(".cover").hide();
+                $(".changeH").hide();
+            });
+            document.querySelector(".changeH_sub").onclick = function() {
+                $(".changeH").hide();
+                $(".cover").hide();
+                if ($(".h_inp")[0].value.trim() != "" &&
+                    $(".h_inp")[1].value.trim() != "" &&
+                    $(".h_inp")[2].value.trim() != "") {
+                    that.addHardwareDo();
+                } else {
+                    warn("有输入框未填写哦");
+                }
             }
+        },
+        addHardwareDo() {
+            let that = this;
+            $.ajax({
+                type: "POST",
+                url: "/hardware/addHardware",
+                data: {
+                    name: $(".h_inp")[0].value,
+                    hardware_id: $(".h_inp")[2].value,
+                    hardware_port: $(".h_inp")[1].value,
+                },
+                success(res) {
+                    warn("添加成功")
+                    that.onloadDo();
+                }
+            });
 
         },
         changeHardware(k) {
             let that = this;
             $(".changeH").show();
-            $(".glass_cover").show().on("click", () => {
-                $(".glass_cover").hide();
+            $(".cover").show().on("click", () => {
+                $(".cover").hide();
                 $(".changeH").hide();
             });
             $(".h_inp")[0].value = this.HardwareList[k].name;
             $(".h_inp")[1].value = this.HardwareList[k].hardwarePort;
             $(".h_inp")[2].value = this.HardwareList[k].hardwareID;
-            $(".changeH_sub").on("click", () => {
+            document.querySelector(".changeH_sub").onclick = function() {
                 $(".changeH").hide();
-                $(".glass_cover").hide();
+                $(".cover").hide();
                 if ($(".h_inp")[0].value.trim() != "" &&
                     $(".h_inp")[1].value.trim() != "" &&
                     $(".h_inp")[2].value.trim() != "") {
-                    $.ajax({
-                        type: "POST",
-                        url: "/hardware/changeHardware",
-                        data: {
-                            id: that.HardwareList[k].id,
-                            name: $(".h_inp")[0].value,
-                            hardware_id: $(".h_inp")[2].value,
-                            hardware_port: $(".h_inp")[1].value,
-                        },
-                        success(res) {
-                            warn("修改成功")
-                            that.onloadDo();
-                        }
-                    });
+                    that.changeHardwareDo(k);
                 } else {
                     warn("有输入框未填写哦")
+                }
+            };
+        },
+        changeHardwareDo(k) {
+            let that = this;
+            $.ajax({
+                type: "POST",
+                url: "/hardware/changeHardware",
+                data: {
+                    id: that.HardwareList[k].id,
+                    name: $(".h_inp")[0].value,
+                    hardware_id: $(".h_inp")[2].value,
+                    hardware_port: $(".h_inp")[1].value,
+                },
+                success(res) {
+                    warn("修改成功")
+                    that.onloadDo();
                 }
             });
         },

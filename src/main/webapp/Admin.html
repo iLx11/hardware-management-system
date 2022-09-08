@@ -14,7 +14,7 @@
     <section class="constructor" id="hardware_sys_PC">
         <div class="header">
             <div class="sysName">
-                HardWareSystem
+                💻HardWareSystem
             </div>
             <div class="MQTTconnect">
                 <input type="text" placeholder="MQTT_address">
@@ -26,8 +26,19 @@
             </div>
             <div class="user">
                 _iLx1_
+                <div class="userTools">
+                    <div @click="" class="userNameChange">更改用户名</div>
+                    <div class="userPasswChange">更改密码</div>
+                </div>
+            </div>
+            <div class="userChangeBox">
+            	<input id="change_put" type="text">
+            	<div class="Boxsub">
+            		👌
+            	</div>
             </div>
         </div>
+        <div class="cover"></div>
         <!------------------------------------------------------------>
         <section class="content">
             <div class="nav">
@@ -152,23 +163,36 @@
                     </div>
                     <div class="userListContent">
                         <ul class="user_list">
+                            <li>
+                                <div class="userList-header">
+                                    <div>
+                                        <h5>ID:</h5>
+                                    </div>
+                                    <div>
+                                        <h5>用户:</h5>
+                                    </div>
+                                    <div>
+                                        <h5>登录状态:</h5>
+                                    </div>
+                                    <div>
+                                        <h5>是否管理员:</h5>
+                                    </div>
+                                </div>
+                            </li>
                             <li v-for="(v,k) in userList">
-                                <div class="list-content">
+                                <div class="user-list-content">
                                     <div class="user_data">
                                         <div>
-                                            <h5>ID:</h5>&nbsp;&nbsp;{{v.id}}
+                                            {{v.id}}
                                         </div>
                                         <div>
-                                            <h5>用户:</h5>
                                             <p>{{v.name}}</p>
                                         </div>
                                         <div>
-                                            <h5>登录状态:</h5>&nbsp;&nbsp;
                                             <p v-if="v.status">已登录</p>
                                             <p v-if="!v.status">未登录</p>
                                         </div>
                                         <div>
-                                            <h5>是否管理员:</h5>&nbsp;&nbsp;
                                             <p v-if="v.mana">是</p>
                                             <p v-if="!v.mana">否</p>
                                         </div>
@@ -189,26 +213,104 @@
                 </section>
                 <!-- 硬件列表界面 -->
                 <!------------------------------------------------------------>
+                <!-- 修改硬件 -->
+                <div class="changeH">
+                    <div class="con_hardware">
+                        <div>
+                            <h5>硬件名:</h5>
+                            <input class="h_inp" type="text" name="">
+                        </div>
+                        <div>
+                            <h5>硬件port:</h5>
+                            <input class="h_inp" type="text" name="">
+                        </div>
+                        <div>
+                            <h5>硬件ID:</h5>
+                            <select class="h_inp">
+                                <option value="AGSW01">AGSW01</option>
+                                <option value="SPSW01">SPSW01</option>
+                            </select>
+                        </div>
+                        <section class="changeH_sub">
+                            <h1>👌</h1>
+                        </section>
+                    </div>
+                </div>
                 <section class="hardwarePage">
                     <div class="hardwareHeader">
-                        hardware Page
+                        <h1>hardware Page</h1>
+                        <div @click="addHardware" class="hardwareAdd">
+                            <h5>➕ 添加硬件</h5>
+                        </div>
                     </div>
                     <div class="hardwareListContent">
+                        <ul class="hardware_list">
+                            <li>
+                                <div class="hardList-header">
+                                    <div>
+                                        <h5>ID:</h5>
+                                    </div>
+                                    <div>
+                                        <h5>硬件名:</h5>
+                                    </div>
+                                    <div>
+                                        <h5>硬件状态:</h5>
+                                    </div>
+                                    <div>
+                                        <h5>硬件port:</h5>
+                                    </div>
+                                    <div>
+                                        <h5>硬件ID:</h5>
+                                    </div>
+                                </div>
+                            </li>
+                            <li v-for="(v,k) in HardwareList">
+                                <div class="hardware-list-content">
+                                    <div class="hardware_data">
+                                        <div>
+                                            {{v.id}}
+                                        </div>
+                                        <div>
+                                            <h3>{{v.name}}</h3>
+                                        </div>
+                                        <div @click="changeStatus(k)" class="hardwareStatus">
+                                            <p v-if="v.status">启用</p>
+                                            <p v-if="!v.status">禁用</p>
+                                        </div>
+                                        <div>
+                                            <p>{{v.hardwarePort}}</p>
+                                        </div>
+                                        <div>
+                                            <p>{{v.hardwareID}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mana_c">
+                                        <svg @click="changeHardware(k)" class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-xiugai"></use>
+                                        </svg>&nbsp;&nbsp;
+                                        <svg @click="delHardware(k)" class="icon" aria-hidden="true">
+                                            <use xlink:href="#icon-danseshixintubiao--copy"></use>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </section>
                 <!-- 图表列表界面 -->
                 <!------------------------------------------------------------>
                 <section class="chartPage">
                     <div class="chartHeader">
-                        chart Page
+                        <h1>chart Page</h1>
                     </div>
-                    <div class="chartListContent"></div>
+                    <div class="chartListContent">
+                    </div>
                 </section>
             </div>
             <!------------------------------------------------------------>
             <div class="mqttMess">
                 <div class="mHeader">
-                    MQTT Message
+                    <h4>MQTT Message</h4>
                 </div>
                 <div class="mMessage">
                     <div class="mqtt_mes">
@@ -246,6 +348,7 @@
 <script type="text/javascript" src="./js/vue.min.js"></script>
 <script type="text/javascript" src="./js/mqtt.min.js"></script>
 <script type="text/javascript" src="./js/pxmu.min.js"></script>
+<script type="text/javascript" src="./js/echarts.min.js"></script>
 <script type="text/javascript" src="./js/AdminData.js"></script>
 <script type="text/javascript" src="./js/Admin.js"></script>
 <script type="text/javascript" src="./js/md5.js"></script>
