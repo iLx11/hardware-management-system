@@ -125,13 +125,16 @@ $(function() {
     // mqtt消息测试
     class MqttBox {
         constructor(a, b, c, d, e, f) {
-            if (mqtt_state == 1) {
-                $(a).on("click", () => { this.pubTopic(b, c); });
-                $(e).on("click", () => { this.subTopic(d); });
-                $(f).on("click", () => { this.unsubTopic(d); });
-            } else {
-                warn("MQTT服务器未连接");
-            }
+            let that = this;
+            $('.mqtt_trans').on('click', () => {
+                if (mqtt_state == 1) {
+                    document.querySelector(a).onclick = function() { that.pubTopic(b, c); };
+                    document.querySelector(e).onclick = function() { that.subTopic(d); };
+                    document.querySelector(f).onclick = function() { that.unsubTopic(d); };
+                } else {
+                    warn("MQTT服务器未连接");
+                }
+            });
         }
         pubTopic(b, c) {
             let topic = $(b).val();
@@ -143,7 +146,7 @@ $(function() {
                 warn("发布主题和内容不能为空");
             }
         }
-        subTopic() {
+        subTopic(d) {
             let topic = $(d).val();
             if (topic.trim() != '') {
                 mqttClient.subscribe(topic, function(err) {
@@ -163,7 +166,7 @@ $(function() {
                 warn("订阅的主题不能为空");
             }
         }
-        unsubTopic() {
+        unsubTopic(d) {
             let topic = $(d).val();
             if (topic.trim() != '') {
                 mqttClient.unsubscribe(topic, (err) => {

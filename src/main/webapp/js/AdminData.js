@@ -48,18 +48,14 @@ var Mana = new Vue({
         },
         //模拟引脚显示
         analogShow(k) {
-            if ($(".bar").eq(k)[0].style.display == "block") {
-                $(".bar").eq(k).fadeOut(100);
-            } else {
-                $(".bar").eq(k).fadeIn(100);
+            console.log("sdfsdfadf")
                 let barIn = $('.bar-input').eq(k)[0];
                 barIn.addEventListener('change', function() {
-                    $('.indicator').eq(k).html(barIn.value + '%').stop().animate({ "marginLeft": barIn.value + '%' }, 600);
+                    $('.ind').eq(k).html(barIn.value + '%');
                 });
-                barIn.addEventListener('touchmove', function() {
-                    $('.indicator').eq(k).html(barIn.value + '%').css("marginLeft", barIn.value + '%');
+                barIn.addEventListener('mousemove', function() {
+                    $('.ind').eq(k).html(barIn.value + '%');
                 });
-            }
 
         },
         //简单控制
@@ -84,6 +80,7 @@ var Mana = new Vue({
                 }
             });
         },
+        //用户退出
         exit() {
             conf("请问您真的想要退出吗", () => {
                 this.changeUser(3, false, null, $('.ch_n').html(), (res) => {
@@ -92,6 +89,7 @@ var Mana = new Vue({
                 });
             });
         },
+        //用户更改输入
         dataTransfer(a) {
             let that = this;
             $('.userChangeBox').show();
@@ -99,12 +97,10 @@ var Mana = new Vue({
                 $('.userChangeBox').hide();
                 $('.cover').hide();
             });
-            $('.bottom_nav').hide();
-            $('#user_c_inp').on("click", () => {
-                $('.userChangeBox').hide();
-                $('.cover').hide();
-                $('.bottom_nav').show();
+            $('.Boxsub').on("click", () => {
                 if ($('#change_put').val().trim() != "") {
+                    $('.userChangeBox').hide();
+                    $('.cover').hide();
                     if (a == 1) {
                         $.ajax({
                             type: "POST",
@@ -128,6 +124,8 @@ var Mana = new Vue({
                     if (a == 2) {
                         that.changeUser(a, false, md5($('#change_put').val()), current_user, (res) => { warn("修改完成"); });
                     }
+                }else {
+                    warn("输入内容为空或为空格");
                 }
             });
             $('#change_put').val("");
@@ -184,11 +182,11 @@ var Mana = new Vue({
                 $(".changeH").hide();
             });
             document.querySelector(".changeH_sub").onclick = function() {
-                $(".changeH").hide();
-                $(".cover").hide();
                 if ($(".h_inp")[0].value.trim() != "" &&
                     $(".h_inp")[1].value.trim() != "" &&
                     $(".h_inp")[2].value.trim() != "") {
+                    $(".changeH").hide();
+                    $(".cover").hide();
                     that.addHardwareDo();
                 } else {
                     warn("有输入框未填写哦");
@@ -223,11 +221,11 @@ var Mana = new Vue({
             $(".h_inp")[1].value = this.HardwareList[k].hardwarePort;
             $(".h_inp")[2].value = this.HardwareList[k].hardwareID;
             document.querySelector(".changeH_sub").onclick = function() {
-                $(".changeH").hide();
-                $(".cover").hide();
                 if ($(".h_inp")[0].value.trim() != "" &&
                     $(".h_inp")[1].value.trim() != "" &&
                     $(".h_inp")[2].value.trim() != "") {
+                    $(".changeH").hide();
+                    $(".cover").hide();
                     that.changeHardwareDo(k);
                 } else {
                     warn("有输入框未填写哦")

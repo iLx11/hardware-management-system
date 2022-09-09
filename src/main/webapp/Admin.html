@@ -17,9 +17,9 @@
                 💻HardWareSystem
             </div>
             <div class="MQTTconnect">
-                <input type="text" placeholder="MQTT_address">
+                <input id="mqt" type="text" placeholder="MQTT_address">
             </div>
-            <div class="exit">
+            <div @click="exit" class="exit">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-tuichu"></use>
                 </svg>
@@ -27,12 +27,12 @@
             <div class="user">
                 _iLx1_
                 <div class="userTools">
-                    <div @click="" class="userNameChange">更改用户名</div>
-                    <div class="userPasswChange">更改密码</div>
+                    <div @click="dataTransfer(1)" class="userNameChange">更改用户名</div>
+                    <div @click="dataTransfer(2)" class="userPasswChange">更改密码</div>
                 </div>
             </div>
             <div class="userChangeBox">
-            	<input id="change_put" type="text">
+            	<input id="change_put" type="text" placeholder="请输入更改的内容">
             	<div class="Boxsub">
             		👌
             	</div>
@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                                 <section class="bar">
-                                    <input class="bar-input analogInp" type="range" min="0" max="100" value="100">
+                                    <input @mousedown="analogShow(k)" class="bar-input analogInp" type="range" min="0" max="100" value="100">
                                     <div class="ind">
                                         100%
                                     </div>
@@ -314,6 +314,10 @@
                 </div>
                 <div class="mMessage">
                     <div class="mqtt_mes">
+                    	<div class="messBox">
+                    		<div class="from"><span></span></div>
+                    		<div class="mes"><span>Message</span></div>
+                    	</div>
                     </div>
                 </div>
                 <section>
@@ -343,7 +347,7 @@
         </section>
     </section>
 </body>
-<script src="./font/iconfontPC.js"></script>
+<script src="./js/iconfontPC.js"></script>
 <script type="text/javascript" src="./js/jquery.min.js"></script>
 <script type="text/javascript" src="./js/vue.min.js"></script>
 <script type="text/javascript" src="./js/mqtt.min.js"></script>

@@ -39,9 +39,10 @@ public class userServlet extends baseServlet {
             if (result != null) {
                 response.getWriter().write("Successful");
                 service.changeUser(3, (byte) 1, null, name);
-//            Cookie cookie = new Cookie("user",name);
-//            response.addCookie(cookie);
-//            cookie.setMaxAge(60 * 30);
+                Cookie cookie = new Cookie("user", name);
+                cookie.setMaxAge(60 * 30);
+                cookie.setPath("/");
+                response.addCookie(cookie);
             } else {
                 response.getWriter().write("Failed");
             }
