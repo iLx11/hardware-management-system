@@ -40,6 +40,7 @@ public class userServlet extends baseServlet {
                 response.getWriter().write("Successful");
                 service.changeUser(3, (byte) 1, null, name);
                 Cookie cookie = new Cookie("user", name);
+                //30分钟时效
                 cookie.setMaxAge(60 * 30);
                 cookie.setPath("/");
                 response.addCookie(cookie);

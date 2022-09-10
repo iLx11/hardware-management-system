@@ -574,12 +574,12 @@
     margin: 0 auto;
     margin-bottom: 0.9em;
     /*margin-right: 0.9em;*/
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1);
 }
 
 .MQTTcontent {
     width: 100%;
-    height: 60%;
+    height: 100%;
 }
 
 .mqtt_trans {

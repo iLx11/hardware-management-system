@@ -30,7 +30,6 @@ $(function() {
 
     function getcookie(objname) {
         let arrstr = document.cookie.split("; ");
-        console.log(arrstr)
         for (var i = 0; i < arrstr.length; i++) {
             var temp = arrstr[i].split("=");
             if (temp[0] == objname) return unescape(temp[1]);
@@ -61,11 +60,11 @@ $(function() {
                 mqtt_state = 1; //mqtt状态
                 mqttClient = client;
                 warn("连接成功");
-                $('#mqtt_sit').html('connected')
+                $('.MQTTStatus>h1').html('已连接');
             })
             client.on('error', function(err) {
                 warn("连接失败");
-                $('#mqtt_sit').html('failed to connected');
+                $('.MQTTStatus>h1').html('未连接');
                 client.end();
             })
         }
@@ -113,7 +112,7 @@ $(function() {
             let content = $(c).val();
             if (topic.trim() != '' && content.trim() != '') {
                 mqttClient.publish(topic, content);
-                 $('.mqtt_mes').append(`<div class="messBox messRight"><div class="from"><span>${topic}</span></div><div class="mes"><span>${content}</span></div></div>`);
+                $('.mqtt_mes').append(`<div class="messBox messRight"><div class="from"><span>${topic}</span></div><div class="mes"><span>${content}</span></div></div>`);
 
                 warn("发布成功");
             } else {
@@ -130,8 +129,8 @@ $(function() {
                         mqttClient.on('message', function(topic, message) {
                             // 此处就是打印消息的具体内容                             
                             $('.mqtt_mes').append(`<div class="messBox"><div class="from"><span>${topic}</span></div><div class="mes"><span>${message.toString()}</span></div></div>`);
-                        	document.querySelector('.mMessage').scrollTop += 600;
-                        	document.querySelector('.mqtt_mes').scrollTop += 600;
+                            document.querySelector('.mMessage').scrollTop += 600;
+                            document.querySelector('.mqtt_mes').scrollTop += 600;
                         })
                     } else {
                         warn("订阅失败");

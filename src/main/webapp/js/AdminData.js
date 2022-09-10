@@ -8,25 +8,31 @@ var Mana = new Vue({
     },
     mounted() {
 
-        this.onloadDo();
+        this.userLoad();
+        this.hardwareLoad();
 
     },
     methods: {
         //加载完成后执行（导入列表）
-        onloadDo() {
+        userLoad() {
             let that = this;
             $.ajax({
                 type: "GET",
                 url: "/user/selectAll",
                 success(res) {
                     that.userList = JSON.parse(res);
+                    $('.uNum>h1').html(that.userList.length);
                 }
             });
+        },
+        hardwareLoad() {
+            let that = this;
             $.ajax({
                 type: "GET",
                 url: "/hardware/selectAll",
                 success(res) {
                     that.HardwareList = arrayh = JSON.parse(res);
+                    $('.hNum>h1').html(that.HardwareList.length);
                     let pattern1 = /^AGSW/;
                     let pattern2 = /^SPSW/;
                     let aa = arrayh.filter((o, i) => {
@@ -205,7 +211,7 @@ var Mana = new Vue({
                 },
                 success(res) {
                     warn("添加成功")
-                    that.onloadDo();
+                    that.hardwareLoad();
                 }
             });
 
@@ -245,7 +251,7 @@ var Mana = new Vue({
                 },
                 success(res) {
                     warn("修改成功")
-                    that.onloadDo();
+                    that.hardwareLoad();
                 }
             });
         },
@@ -261,7 +267,7 @@ var Mana = new Vue({
                     },
                     success(res) {
                         warn("修改成功")
-                        that.onloadDo();
+                        that.hardwareLoad();
                     }
                 });
             });
@@ -277,7 +283,7 @@ var Mana = new Vue({
                     },
                     success(res) {
                         warn("删除成功")
-                        that.onloadDo();
+                        that.hardwareLoad();
                     }
                 });
             });

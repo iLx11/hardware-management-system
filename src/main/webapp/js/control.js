@@ -141,6 +141,8 @@ $(function() {
             let content = $(c).val();
             if (topic.trim() != '' && content.trim() != '') {
                 mqttClient.publish(topic, content);
+                $('.mqtt_mes').append(`<div class="messBox messRight"><div class="from"><span>${topic}</span></div><div class="mes"><span>${content}</span></div></div>`);
+
                 warn("发布成功");
             } else {
                 warn("发布主题和内容不能为空");
@@ -155,8 +157,8 @@ $(function() {
                         //处理消息
                         mqttClient.on('message', function(topic, message) {
                             // 此处就是打印消息的具体内容
-                            $('.mqtt_mes').prepend('receive -> ' + message.toString() +
-                                '---from ->' + topic + '<br>');
+                            $('.mqtt_mes').append(`<div class="messBox"><div class="from"><span>${topic}</span></div><div class="mes"><span>${message.toString()}</span></div></div>`);
+                            document.querySelector('.mqtt_mes').scrollTop += 600;
                         })
                     } else {
                         warn("订阅失败");

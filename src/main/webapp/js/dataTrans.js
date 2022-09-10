@@ -10,12 +10,14 @@ var Mana = new Vue({
     },
     mounted() {
 
-        this.onloadDo();
+        this.userLoad();
+        this.hardwareLoad();
 
     },
     methods: {
         //加载完成后执行（导入列表）
-        onloadDo() {
+        //加载用户列表
+        userLoad() {
             let that = this;
             $.ajax({
                 type: "GET",
@@ -24,6 +26,10 @@ var Mana = new Vue({
                     that.userList = JSON.parse(res);
                 }
             });
+        },
+        //加载硬件列表
+        hardwareLoad() {
+            let that = this;
             $.ajax({
                 type: "GET",
                 url: "/hardware/selectAll",
@@ -60,7 +66,7 @@ var Mana = new Vue({
                     $('.indicator').eq(k).html(barIn.value + '%').stop().animate({ "marginLeft": barIn.value + '%' }, 600);
                 });
                 barIn.addEventListener('touchmove', function() {
-                    $('.indicator').eq(k).html(barIn.value + '%').css( "marginLeft", barIn.value + '%');
+                    $('.indicator').eq(k).html(barIn.value + '%').css("marginLeft", barIn.value + '%');
                 });
             }
 
@@ -194,7 +200,7 @@ var Mana = new Vue({
                     },
                     success(res) {
                         warn("添加成功")
-                        that.onloadDo();
+                        that.hardwareLoad();
                     }
                 });
             } else {
@@ -229,7 +235,7 @@ var Mana = new Vue({
                         },
                         success(res) {
                             warn("修改成功")
-                            that.onloadDo();
+                            that.hardwareLoad();
                         }
                     });
                 } else {
@@ -249,7 +255,7 @@ var Mana = new Vue({
                     },
                     success(res) {
                         warn("修改成功")
-                        that.onloadDo();
+                        that.hardwareLoad();
                     }
                 });
             });
@@ -265,7 +271,7 @@ var Mana = new Vue({
                     },
                     success(res) {
                         warn("删除成功")
-                        that.onloadDo();
+                        that.hardwareLoad();
                     }
                 });
             });
