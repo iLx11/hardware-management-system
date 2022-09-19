@@ -9,6 +9,7 @@
     position: fixed;
     z-index: -1;
     background: rgba(243, 246, 253, 1.0);
+
 }
 
 /*页面结构*/
@@ -66,7 +67,6 @@
     background: var(--bgcolor);
     /*box-shadow: var(--bgshadow1);*/
     border-radius: 25px;
-
 }
 
 .mqttMess {

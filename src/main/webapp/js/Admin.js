@@ -32,7 +32,7 @@ $(function() {
         let arrstr = document.cookie.split("; ");
         for (var i = 0; i < arrstr.length; i++) {
             var temp = arrstr[i].split("=");
-            if (temp[0] == objname) return unescape(temp[1]);
+            if (temp[0] === objname) return unescape(temp[1]);
         }
     }
     /*MQTT部分
@@ -49,10 +49,9 @@ $(function() {
     }
 
     // MQTT服务器地址输入
-    $('#mqt').blur(() => {
-        if ($('#mqt').val() == '') {
+    $("#mqt").blur(() => {
+        if ($("#mqt").val() === '') {
             warn("服务器地址为空");
-            return;
         } else {
             mqtt_address = $('#mqt').val();
             let client = mqtt.connect(mqtt_address, options)
@@ -69,36 +68,36 @@ $(function() {
             })
         }
     });
-    // MQTT订阅与发布控制
-    //     mqtt(message) {
-    //         client.on('connect', () => {
-    //             console.log("connect success!")
-    //             //订阅主题 presence
-    //             client.subscribe('control', (err) => {
-    //                 if (!err) {
-    //                     console.log("subscribe success!")
-    //                     //发布主题presence,消息内容为Hello mqtt
-    //                     client.publish('presence', message)
-    //                 } else {
-    //                     //打印错误
-    //                     console.log(err)
-    //                     console.log('mqtt连接错误')
-    //                 }
-    //             })
-    //         })
-    //         //如果连接错误，打印错误
-    //         client.on('error', function(err) {
-    //             console.log(err)
-    //             client.end()
-    //         })
-    //     }
+    /*MQTT订阅与发布控制
+        mqtt(message) {
+            client.on('connect', () => {
+                console.log("connect success!")
+                //订阅主题 presence
+                client.subscribe('control', (err) => {
+                    if (!err) {
+                        console.log("subscribe success!")
+                        //发布主题presence,消息内容为Hello mqtt
+                        client.publish('presence', message)
+                    } else {
+                        //打印错误
+                        console.log(err)
+                        console.log('mqtt连接错误')
+                    }
+                })
+            })
+            //如果连接错误，打印错误
+            client.on('error', function(err) {
+                console.log(err)
+                client.end()
+            })
+        }*/
 
     // mqtt消息测试
     class MqttBox {
         constructor(a, b, c, d, e, f) {
             let that = this;
             $('.MQTTcontent').on('click', function() {
-                if (mqtt_state == 1) {
+                if (mqtt_state === 1) {
                     document.querySelector(a).onclick = function() { that.pubTopic(b, c); };
                     document.querySelector(e).onclick = function() { that.subTopic(d); };
                     document.querySelector(f).onclick = function() { that.unsubTopic(d); };
@@ -110,7 +109,7 @@ $(function() {
         pubTopic(b, c) {
             let topic = $(b).val();
             let content = $(c).val();
-            if (topic.trim() != '' && content.trim() != '') {
+            if (topic.trim() !== '' && content.trim() !== '') {
                 mqttClient.publish(topic, content);
                 $('.mqtt_mes').append(`<div class="messBox messRight"><div class="from"><span>${topic}</span></div><div class="mes"><span>${content}</span></div></div>`);
 
@@ -121,7 +120,7 @@ $(function() {
         }
         subTopic(d) {
             let topic = $(d).val();
-            if (topic.trim() != '') {
+            if (topic.trim() !== '') {
                 mqttClient.subscribe(topic, function(err) {
                     if (!err) {
                         warn("订阅成功");
@@ -142,7 +141,7 @@ $(function() {
         }
         unsubTopic(d) {
             let topic = $(d).val();
-            if (topic.trim() != '') {
+            if (topic.trim() !== '') {
                 mqttClient.unsubscribe(topic, (err) => {
                     if (!err) {
                         warn('取消订阅成功');

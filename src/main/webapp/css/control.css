@@ -1,5 +1,5 @@
 :root {
-    --bgcolor: rgba(255, 255, 255, 0.9);
+    --bgcolor: rgba(255, 255, 255, 0.17);
     --bgshadow1: 3px 4px 12px 3px rgba(111, 109, 133, 0.2);
     --bgshadow2: 3px 4px 12px 3px rgba(111, 109, 133, 0.13);
 }
