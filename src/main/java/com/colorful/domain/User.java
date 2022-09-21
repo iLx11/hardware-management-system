@@ -8,10 +8,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class User {
-        private int id;
-        private String name;
-        private String password;
-        private boolean status;
-        private boolean mana;
+    private int id;
+    private String name;
+    private String password;
+    private boolean status;
+    private boolean mana;
 
 }

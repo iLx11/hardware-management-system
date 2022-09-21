@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan({"com.colorful.service"})
 @PropertySource("classpath:jdbc.properties")
 @Import({JdbcConfig.class, MyBatisConfig.class})
+//开启事务驱动
 @EnableTransactionManagement
 public class SpringConfig {
 

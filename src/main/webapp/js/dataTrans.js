@@ -21,7 +21,7 @@ var Mana = new Vue({
             let that = this;
             $.ajax({
                 type: "GET",
-                url: "/user/selectAll",
+                url: "/users",
                 success(res) {
                     that.userList = JSON.parse(res);
                 }

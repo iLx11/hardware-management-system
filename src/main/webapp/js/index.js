@@ -13,19 +13,19 @@ $(function() {
         if ($('#user').val() != '' && $('#password').val() != '') {
             $.ajax({
                 type: "POST",
-                url: "/user/userVerify",
+                url: "/users/login",
                 data: {
                     name: $('#user').val(),
                     password: md5($('#password').val())
                 },
                 success(res) {
                     console.log(res)
-                    if (res == "Successful") {
-                        warn("验证成功");
-                        window.location.href = "/control.html?user=" + $('#user').val();
-                        if (clientW > 600) { window.location.href = "/Admin.html?user=" + $('#user').val();}
+                    if (res.code == 10041) {
+                        warn(res.massage);
+                        window.location.href = "/control.html";
+                        if (clientW > 600) { window.location.href = "/Admin.html";}
                     } else {
-                        warn("验证失败");
+                        warn(res.massage);
                         setTimeout(() => {
                             conf("请问是否跳转到注册页面", () => {
                                 window.location.href = "/register.html";

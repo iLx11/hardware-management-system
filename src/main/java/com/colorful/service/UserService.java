@@ -1,11 +1,11 @@
 package com.colorful.service;
 
 import com.colorful.domain.User;
-import org.apache.ibatis.annotations.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+//加事务
 @Transactional
 public interface UserService {
     /**
@@ -21,7 +21,7 @@ public interface UserService {
      * @param name
      * @param password
      */
-    public void addUser(String name,String password);
+    public boolean addUser(String name,String password);
 
     /**
      * 获取所有用户列表
@@ -30,17 +30,49 @@ public interface UserService {
     public List<User> selectAll();
 
     /**
-     * 查看用户名是否存在（修改用户名）
+     * 查看用户名是否存在
      * @param name
      * @return
      */
     public User selectByName(String name);
 
     /**
+     * 更改管理员状态
+     * @param value
+     * @param name
+     * @return
+     */
+    public boolean changeMana(byte value, String name);
+
+    /**
+     * 更改用户登录状态
+     * @param value
+     * @param name
+     * @return
+     */
+    public boolean changeStatus(byte value, String name);
+
+    /**
+     *更改用户名
+     * @param value
+     * @param name
+     * @return
+     */
+    public boolean changeName(String value, String name);
+
+    /**
+     *更改用户密码
+     * @param value
+     * @param name
+     * @return
+     */
+    public boolean changePassword(String value, String name);
+
+    /**
      * 通过用户id删除用户
      * @param id
      */
-    public void deleteById(Integer id);
+    public boolean deleteById(Integer id);
 
     /**
      * 删除表的id列

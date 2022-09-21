@@ -14,6 +14,7 @@ $(function() {
     }
     new PageChange(['.controlPage', '.userPage', '.hardwarePage', '.chartPage']);
 
+    //窗口调整
     window.onresize = function() {
         let clientW = document.documentElement.clientWidth;
         if (clientW < 900 && clientW > 600) {
@@ -23,12 +24,19 @@ $(function() {
             $('.mqttMess').show();
             $('.component').css("width", "65%");
         } else if (clientW < 600) {
-            if (getcookie("user") != null && getcookie("user") != '')
-                window.location.href = "/control.html?user=" + getcookie("user");
+            if (getcookie("user") != null && getCookie("user") != '')
+                window.location.href = "/control.html?user=" + getCookie("user");
         }
     }
 
-    function getcookie(objname) {
+    //获取用户
+    let currentUser = getCookie("user");
+    if (currentUser != null) {
+        Mana.current_user = currentUser;
+        Mana.changeUser(2, 1, Mana.current_user);
+    }
+    $(".user span").html(currentUser);
+    function getCookie(objname) {
         let arrstr = document.cookie.split("; ");
         for (var i = 0; i < arrstr.length; i++) {
             var temp = arrstr[i].split("=");

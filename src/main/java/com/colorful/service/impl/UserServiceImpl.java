@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(String name, String password) {
-        userDao.addUser(name, password);
+    public boolean addUser(String name, String password) {
+        return userDao.addUser(name, password);
     }
 
     @Override
@@ -34,8 +34,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteById(Integer id) {
-        userDao.deleteById(id);
+    public boolean changeMana(byte value, String name) {
+        return userDao.changeMana(value, name);
+    }
+
+    @Override
+    public boolean changeStatus(byte value, String name) {
+        return userDao.changeStatus(value, name);
+    }
+
+    @Override
+    public boolean changeName(String value, String name) {
+        return userDao.changeName(value, name);
+    }
+
+    @Override
+    public boolean changePassword(String value, String name) {
+        return userDao.changePassword(value, name);
+    }
+
+    @Override
+    public boolean deleteById(Integer id) {
+        return userDao.deleteById(id);
     }
 
     @Override

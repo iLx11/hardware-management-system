@@ -9,12 +9,19 @@ import javax.sql.DataSource;
 
 public class MyBatisConfig {
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) {
+    public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
         factoryBean.setTypeAliasesPackage("com.colorful.domain");
+
+        //开启驼峰命名转换
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        configuration.setMapUnderscoreToCamelCase(true);
+        factoryBean.setConfiguration(configuration);
+
         return factoryBean;
     }
+    //控制事务 -> 数据源对象
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer msc = new MapperScannerConfigurer();
