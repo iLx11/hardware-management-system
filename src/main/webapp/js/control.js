@@ -8,20 +8,20 @@ $(function() {
         //     $('.C_t').css("background", "rgba(226, 225, 223, 0.87)");
         // }
     });
-    var current_user = getUrlQueryString('user');
-    $('.ch_n').html(current_user);
 
-    //检测跳转页面传回来的参数
-    function getUrlQueryString(names, urls) {
-        urls = urls || window.location.href;
-        urls && urls.indexOf("?") > -1 ? urls = urls
-            .substring(urls.indexOf("?") + 1) : "";
-        var reg = new RegExp("(^|&)" + names + "=([^&]*)(&|$)", "i");
-        var r = urls ? urls.match(reg) : window.location.search.substr(1)
-            .match(reg);
-        if (r != null && r[2] != "")
-            return unescape(r[2]);
-        return null;
+    //获取用户
+    let currentUser = getCookie("user");
+    if (currentUser != null) {
+        Mana.current_user = currentUser;
+        Mana.changeUser(2, 1, Mana.current_user);
+    }
+    $(".ch_n").html(currentUser);
+    function getCookie(objname) {
+        let arrstr = document.cookie.split("; ");
+        for (var i = 0; i < arrstr.length; i++) {
+            var temp = arrstr[i].split("=");
+            if (temp[0] === objname) return unescape(temp[1]);
+        }
     }
 
     /*MQTT部分
