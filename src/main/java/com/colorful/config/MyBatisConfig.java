@@ -21,7 +21,7 @@ public class MyBatisConfig {
 
         return factoryBean;
     }
-    //控制事务 -> 数据源对象
+    //映射文件扫描
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer msc = new MapperScannerConfigurer();

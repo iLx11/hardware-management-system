@@ -96,11 +96,12 @@ var Mana = new Vue({
         dataTransfer(a) {
             let that = this;
             $('.userChange').show();
+            $('.bottom_nav').hide();
             $('.glass_cover').show().on("click", () => {
                 $('.userChange').hide();
                 $('.glass_cover').hide();
+                $('.bottom_nav').show();
             });
-            $('.bottom_nav').hide();
             $('#user_c_inp').on("click", () => {
                 if ($('#change_put').val().trim() != "") {
                     $('.userChange').hide();
@@ -169,7 +170,7 @@ var Mana = new Vue({
                         that.userLoad();
                         if (method == 3) {
                             that.current_user = value;
-                            $(".user span").html(that.current_user);
+                            $(".ch_n").html(that.current_user);
                         }
                     }
                 }

@@ -39,5 +39,4 @@ public class JdbcConfig {
         ds.setDataSource(dataSource);
         return ds;
     }
-
 }
