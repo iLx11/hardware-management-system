@@ -25,9 +25,9 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/login")
-    public Result userVerify(String name, String password, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        if (service.userVerify(name, password) != null) {
-            addCookie("user", name, response, request);
+    public Result userVerify(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        if (service.userVerify(user.getName(), user.getPassword()) != null) {
+            addCookie("user", user.getName(), response, request);
             return new Result(Code.GET_OK, null, "验证成功");
         } else {
             return new Result(Code.GET_ERR, null, "验证失败");
@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public Result addUser(String name, String password) {
-        return new Result(service.addUser(name, password) ? Code.POST_OK : Code.POST_ERR, null, "注册成功");
+    public Result addUser(@RequestBody User user) {
+        return new Result(service.addUser(user.getName(), user.getPassword()) ? Code.POST_OK : Code.POST_ERR, null, "注册成功");
     }
 
     @GetMapping
