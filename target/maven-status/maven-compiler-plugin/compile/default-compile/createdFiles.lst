@@ -1,5 +1,6 @@
 com\colorful\config\SpringConfig.class
 com\colorful\service\HardwareService.class
+com\colorful\config\CorsFilter.class
 com\colorful\dao\HardwareDao.class
 com\colorful\dao\UserDao.class
 com\colorful\config\MyBatisConfig.class
