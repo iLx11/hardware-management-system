@@ -2,6 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include "bujin.h"
+#include <ArduinoJson.h> //使用JSON-v5版的库
 /*****************AP设置项 *****************/
 const char *STAssid = "webcontrol" ; //AP名字
 const char *STApassword = "12345678"; //AP密码
@@ -15,10 +16,14 @@ IPAddress ap_ip(192, 168, 1, 128); //AP的ip地址
 /****************io设置项 *****************/
 int state_led = 2;                   //IO2（D4），板载led，作为判断WiFi连接状态，连上为亮
 
-int relay1 = 15;
-int relay2 = 13;
-int relay3 = 12;
-int relay4 = 14;
+//int relay1 = 15;
+//int relay2 = 13;
+//int relay3 = 12;
+//int relay4 = 14;
+
+int port = 0;
+String ins = "";
+String num = "";
 //定义
 //---------------------------------------------------------------------
 
@@ -28,16 +33,16 @@ void setup()
 
   pinMode(state_led, OUTPUT);
   digitalWrite(state_led, 1);
-  pinMode(relay1, OUTPUT);
-  digitalWrite(relay1, 0);
-  pinMode(relay2, OUTPUT);
-  digitalWrite(relay1, 0);
+  //  pinMode(relay1, OUTPUT);
+  //  digitalWrite(relay1, 0);
+  //  pinMode(relay2, OUTPUT);
+  //  digitalWrite(relay1, 0);
   Serial.begin(115200);
   Serial.println(comPacket);
   Serial.println("");
   init_STA();
-  motoInit(5,4,0,2);
-  
+  motoInit(5, 4, 0, 2);
+
 
   if (Udp.begin(localUdp)) { //启动Udp监听服务
     Serial.println("监听成功");
@@ -52,7 +57,7 @@ void setup()
 }
 void loop()
 {
- 
+
   delay(500);
   //oledShow();
   udpDo();
@@ -63,35 +68,30 @@ void loop()
   }
 
 }
-//OLED屏幕显示内容
-//---------------------------------------------------------------------
-//void oledShow() {
-//  display.clearDisplay();
-//
-//  // 设置字体颜色,白色可见
-//  display.setTextColor(WHITE);
-//
-//  //设置字体大小
-//  display.setTextSize(2);
-//
-//  //设置光标位置
-//  display.setCursor(0, 0);
-//  display.print("HELLO");
-//
-//  display.setCursor(0, 20);
-//  display.print("NIHAO!");
-//  display.setTextSize(1);
-//
-//  //设置光标位置
-//  display.setCursor(0, 50);
-//  display.print("SLAVE_");
-//  //打印自开发板重置以来的秒数：
-//  display.display();
-//}
+
 void sendBack(const char *buffer) {
   Udp.beginPacket(Udp.remoteIP(), remoteUdp);//配置远端ip地址和端口
   Udp.write(buffer); //把数据写入发送缓冲区
   Udp.endPacket(); //发送数据
+}
+//JSON数据解析
+void jsonDataFormat(String str) {
+  // 重点2：解析的JSON数据大小
+  DynamicJsonDocument doc(str.length() * 2); //解析的JSON数据大小
+
+
+  // 重点3：反序列化数据
+  deserializeJson(doc, str);
+
+  // 重点4：获取解析后的数据信息
+  port = doc["hardwarePort"].as<int>();
+  ins = doc["instruction"].as<String>();
+  num = doc["num"].as<String>();
+
+  // 通过串口监视器输出解析后的数据信息
+  Serial.print("port = "); Serial.println(port);
+  Serial.print("ins = "); Serial.println(ins);
+  Serial.print("num = "); Serial.println(num);
 }
 void udpDo() {
   //解析Udp数据包
@@ -108,42 +108,35 @@ void udpDo() {
     {
       comPacket[len] = 0;//清空缓存
       Serial.printf("UDP数据包内容为: %s\n", comPacket);//向串口打印信息
+      jsonDataFormat(comPacket);
+      //      Serial.println(port);
+      Serial.println(num);
+      if (num == "relay") {
+        pinMode(port, OUTPUT);
+        Serial.println("继电器工作");
+        if (ins == "open") {
+          digitalWrite(port, 1);
+        } else if (ins == "close") {
+          digitalWrite(port, 0);
+        }
+      } else if (num == "motor") {
+        if (ins == "open") {
+          motoRun(1, 2, 1);
+        } else if (ins == "close") {
+          motoRun(2, 2, 1);
+        }
+      }
 
       //strcmp函数是string compare(字符串比较)的缩写，用于比较两个字符串并根据比较结果返回整数。
       //基本形式为strcmp(str1,str2)，若str1=str2，则返回零；若str1<str2，则返回负数；若str1>str2，则返回正数。
-
-      if (strcmp(comPacket, "FAN_OFF") == 0) // 命令LED_OFF
-      {
-        digitalWrite(relay1, 0);
-        sendBack("LED has been turn off\n");
-      } else if (strcmp(comPacket, "FAN_ON") == 0) //如果收到LED_ON
-      {
-        digitalWrite(relay1, 1);
-        sendBack("LED has been turn on\n");
-      } else if (strcmp(comPacket, "WET_ON") == 0) //如果收到LED_ON
-      {
-        digitalWrite(relay2, 1);
-        sendBack("LED has been turn on\n");
-      } else if (strcmp(comPacket, "WET_OFF") == 0) //如果收到LED_ON
-      {
-        digitalWrite(relay2, 0);
-        sendBack("LED has been turn on\n");
-      }else if (strcmp(comPacket, "CUR_ON") == 0) //如果收到LED_ON
-      {
-        motoRun(1,2,1);
-      }else if (strcmp(comPacket, "CUR_OFF") == 0) //如果收到LED_ON
-      {
-       motoRun(2,2,1);
-      }
-
-      else // 如果指令错误，调用sendCallBack
-      {
-        sendBack("Command Error!");
-      }
+      //      if (strcmp(comPacket, "FAN_OFF") == 0) // 命令LED_OFF
+      //      {
+      //        digitalWrite(relay1, 0);
+      //        sendBack("LED has been turn off\n");
+      //      }
     }
   }
 }
-
 //初始化连接AP
 void init_STA()
 {

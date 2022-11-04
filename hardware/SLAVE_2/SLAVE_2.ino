@@ -3,8 +3,9 @@
 #include <WiFiUdp.h>
 #include "SR04.h" 
 #include "bujin.h"
+#include <ArduinoJson.h> //使用JSON-v5版的库
 /*****************AP设置项 *****************/
-const char *STAssid = "webcontrol" ; //AP名字
+const char *STAssid = "webcontrol" ; //`AP名字
 const char *STApassword = "12345678"; //AP密码
 /****************UDP设置项 *****************/
 unsigned int localUdp = 4321;      //监听端口
@@ -24,7 +25,9 @@ int ofdoor = 0;
 
 //定义
 //---------------------------------------------------------------------
-
+int port = 0;
+String ins = "";
+String num = "";
 //---------------------------------------------------------------------
 void setup()
 {
@@ -51,7 +54,6 @@ void setup()
 }
 void loop()
 {
- 
   delay(500);
   //oledShow();
   int a=sr04.Distance();          //获取当前距离
@@ -72,6 +74,25 @@ void sendBack(const char *buffer) {
   Udp.write(buffer); //把数据写入发送缓冲区
   Udp.endPacket(); //发送数据
 }
+//JSON数据解析
+void jsonDataFormat(String str) {
+  // 重点2：解析的JSON数据大小
+  DynamicJsonDocument doc(str.length() * 2); //解析的JSON数据大小
+
+
+  // 重点3：反序列化数据
+  deserializeJson(doc, str);
+
+  // 重点4：获取解析后的数据信息
+  port = doc["hardwarePort"].as<int>();
+  ins = doc["instruction"].as<String>();
+  num = doc["num"].as<String>();
+
+  // 通过串口监视器输出解析后的数据信息
+  Serial.print("port = "); Serial.println(port);
+  Serial.print("ins = "); Serial.println(ins);
+  Serial.print("num = "); Serial.println(num);
+}
 void udpDo() {
   //解析Udp数据包
   int packetSize = Udp.parsePacket();//获得解析包
@@ -88,21 +109,25 @@ void udpDo() {
       comPacket[len] = 0;//清空缓存
       Serial.printf("UDP数据包内容为: %s\n", comPacket);//向串口打印信息
 
-      //strcmp函数是string compare(字符串比较)的缩写，用于比较两个字符串并根据比较结果返回整数。
-      //基本形式为strcmp(str1,str2)，若str1=str2，则返回零；若str1<str2，则返回负数；若str1>str2，则返回正数。
-
-      if (strcmp(comPacket, "DOOR_ON") == 0) // 命令LED_OFF
-      {
-        motoRun(1,2,1);
-        ofdoor = 1;
-      } else if (strcmp(comPacket, "DOOR_OFF") == 0) //如果收到LED_ON
-      {
-        motoRun(2,2,1);
-        ofdoor = 0;
-      }
-      else // 如果指令错误，调用sendCallBack
-      {
-        sendBack("Command Error!");
+      jsonDataFormat(comPacket);
+      //      Serial.println(port);
+      Serial.println(num);
+      if (num == "relay") {
+        pinMode(port, OUTPUT);
+        Serial.println("继电器工作");
+        if (ins == "open") {
+          digitalWrite(port, 1);
+        } else if (ins == "close") {
+          digitalWrite(port, 0);
+        }
+      } else if (num == "motor") {
+        if (ins == "open") {
+          motoRun(1, 2, 1);
+          ofdoor = 1;
+        } else if (ins == "close") {
+          motoRun(2, 2, 1);
+          ofdoor = 0;
+        }
       }
     }
   }

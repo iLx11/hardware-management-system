@@ -12,41 +12,41 @@
 #include "DHT.h"         //加载温湿度库
 #include "URLCode.h"
 
-//定义对象
+//对象定义
 //---------------------------------------------------------------------
-const char *ssid = "webcontrol";             //AP的SSID（WiFi名字）
-const char *password = "12345678";            //AP的密码
-const char* mqtt_server = "bemfa.com";          //MQTT服务器IP
-const int mqttPort = 9501;                            //MQTT服务器端口
+//AP模式定义
+const char *ssid = "webcontrol";                //AP的SSID（WiFi名字）
+const char *password = "12345678";              //AP的密码
+//UDP定义远端IP
 const char *remoteIp1 = "192.168.3.123";
 const char *remoteIp2 = "192.168.3.223";
-Servo myservo;                      //定义一个舵机对象
+//定义舵机对象
+Servo myservo;
 Servo myservo2;
 //温湿度定义
 #define DHTPIN 0     // what digital pin we're connected to
 #define DHTTYPE DHT11   // DHT 11
 DHT dht(DHTPIN, DHTTYPE);
-
-//wifi对象与DNS定义
+//wifi对象定义
 ESP8266WiFiMulti wifiMulti;     // 建立ESP8266WiFiMulti对象,对象名称是 'wifiMulti'
 ESP8266WebServer esp8266_server(80);    // 建立网络服务器对象，该对象用于响应HTTP请求。监听端口（80）
+//DNS对象定义
 const byte DNS_PORT = 53; //DNS服务端口号，一般为53
 DNSServer dnsServer;
-
 //MQTT定义
-const char* ESP8266_ID = "75ee4e39450943889749e9924e3a982c";                 //自定义ID
-const char* ESP8266_user = "75ee4e39450943889";                   //用户名
-const char* ESP8266_password = "wulianwang";              //密码
+const char* mqtt_server = "bemfa.com";          //MQTT服务器IP
+const int mqttPort = 9501;                      //MQTT服务器端口
+const char* ESP8266_ID = "75ee4e39450943889749e9924e3a982c";     //自定义ID
+const char* ESP8266_user = "75ee4e39450943889";       //用户名
+const char* ESP8266_password = "wulianwang";          //密码
 const char* ESP8266_pub = "banzi002";                 //发送主题（对方的订阅主题）
 const char* ESP8266_sub = "banzi002";                 //订阅主题（对方的发送主题）
 WiFiClient espClient;
 PubSubClient client(espClient);                      //定义客户端对象
-
 //u8g2 OLED库定义
 #define SCL 5
 #define SDA 4
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /*clock=*/SCL, /*data=*/SDA, /*reset=*/U8X8_PIN_NONE);
-
 //UDP定义
 IPAddress sta_client;                        //保存sta设备的ip地址
 unsigned int localUdp = 1234;      //监听端口
@@ -54,18 +54,12 @@ unsigned int remoteUdp = 4321;     //发送端口
 unsigned int remoteUdp1 = 4322;    //发送端口
 char comPacket[255];               //数据缓存
 WiFiUDP Udp;                       //定义udp
-
-//URL对象定义
+//URL对象定义（URL编码）
 URLCode url;
 
 
-//定义引脚
+//引脚定义
 //---------------------------------------------------------------------
-//舵机引脚
-//int _servo = 14;                    //IO14（D5）
-//int _servo2 = 13;
-myservo.attach(14);
-myservo2.attach(13);
 //灯
 //int LED = D4;
 int ji = D0;                //继电器
@@ -78,23 +72,15 @@ bool oState = false;//状态标志位
 //继电器置0为关
 //人体检测pinMode(__,INPUT);
 void hardwareInit() {
-  //  myservo.attach(_servo);           //设置指定io为舵机
-  //  myservo2.attach(_servo2);
-  //
-  //  myservo.write(90);
-  //  myservo2.write(90);
-  //
-  //  pinMode(LED, OUTPUT);   // 初始化NodeMCU控制板载LED引脚为OUTPUT
-  //  digitalWrite(LED, LOW);// 初始化LED引脚状态
+  myservo.attach(14);
+  myservo2.attach(13);
+  myservo.write(90);
+  myservo2.write(90);
   pinMode(ji, OUTPUT);
   digitalWrite(ji, 0);
   pinMode(hongDT, INPUT);
-
 }
-
-//---------------------------------------------------------------------
-void setup() {
-
+void oledInit() {
   u8g2.begin();
   u8g2.setFont(u8g2_font_unifont_t_symbols);
   u8g2.firstPage();
@@ -107,21 +93,23 @@ void setup() {
     u8g2.setCursor(0, 30); //指定显示位置
     u8g2.print("MASTER"); //使用print来显示字符串
   } while (u8g2.nextPage());
-
+}
+//---------------------------------------------------------------------
+void setup() {
+  //OLED初始化
+  oledInit();
   //硬件初始化
   hardwareInit();
   //UDP初始化
   udpBegin();
   //温湿度初始化
   dht.begin();
-
-  Serial.begin(9600);          // 启动串口通讯
+  //启动串口通讯
+  Serial.begin(9600);
   Serial.println("");
-
   //wifi初始化
   wifiInit();
   AP_init();
-
   // 启动闪存文件系统
   if (SPIFFS.begin()) {
     Serial.println("SPIFFS Started.");
@@ -129,13 +117,13 @@ void setup() {
     Serial.println("SPIFFS Failed to Start.");
   }
   handleGet();
-
   // 启动网站服务
   esp8266_server.begin();
   Serial.println("HTTP server started");
-
-  initMQTT();                         //初始化MQTT客户端
-  gotoMQTT();                         //连接到指定MQTT服务器，并订阅指定主题
+  //初始化MQTT客户端
+  initMQTT();
+  //连接到指定MQTT服务器，并订阅指定主题
+  gotoMQTT();
 }
 //---------------------------------------------------------------------
 void loop(void) {
@@ -209,7 +197,6 @@ void AP_init() {
   //    IPAddress myIP = WiFi.soft APIP();
   IPAddress myIP = WiFi.softAPIP();           //用变量myIP接收AP当前的IP地址
   Serial.println(myIP);                       //打印输出myIP的IP地址
-
   //DNS服务器解析地址
   //  dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
   dnsServer.start(DNS_PORT, "www.me.com", softLocal);
@@ -225,7 +212,6 @@ void hong() {
     Serial.println("有人靠近，");
     delay(1000);
   }
-
 }
 ///*串口数据接收*/
 void usartEvent() {
@@ -237,7 +223,8 @@ void usartEvent() {
   }
   while (Serial.read() >= 0) {} //清除串口缓存
 }
-///*数据解析*/
+
+//JSON用户状态数据解析
 void UserData(String content) {
   StaticJsonDocument<200> doc;
   DeserializationError error = deserializeJson(doc, content);
@@ -248,7 +235,25 @@ void UserData(String content) {
   oState =  doc["status"];
   Serial.printf("the status is %d", oState);
 }
+//JSON数据解析
+void jsonDataFormat(String str) {
+  // 重点2：解析的JSON数据大小
+  DynamicJsonDocument doc(str.length() * 2); //解析的JSON数据大小
 
+
+  // 重点3：反序列化数据
+  deserializeJson(doc, str);
+
+  // 重点4：获取解析后的数据信息
+  String port = doc["hardwarePort"].as<String>();
+  String ins = doc["instruction"].as<String>();
+  //  String num = doc["num"].as<String>();
+
+  // 通过串口监视器输出解析后的数据信息
+  Serial.print("port = "); Serial.println(port);
+  Serial.print("ins = "); Serial.println(ins);
+  //  Serial.print("ins = "); Serial.println(num);
+}
 
 //UDP发送函数
 void sendBack(const char *buffer, int xx) {
@@ -293,7 +298,7 @@ void udpDo() {
     }
   }
 }
-void ledShow(String content) {
+void oledShow(String content) {
   do
   {
     u8g2.clearBuffer();
@@ -361,20 +366,26 @@ void MQTT_Handler(String data)//数据处理函数，执行对接收数据的分
 //处理用户get请求
 //---------------------------------------------------------------------
 void handleGet() {
-  //灯光
-  esp8266_server.on("/spswcontrol01", SPSWControl01);
-  //舵机
-  esp8266_server.on("/spswcontrol11", SPSWControl11);
   //继电器
-  esp8266_server.on("/agswcontrol01", AGSWControl01);
+  esp8266_server.on("/spswcontrol02", SPSWControl02);
+  //继电器
+  esp8266_server.on("/spswcontrol03", SPSWControl03);
   //步进电机
+  esp8266_server.on("/spswcontrol12", SPSWControl12);
+  //步进电机
+  esp8266_server.on("/spswcontrol13", SPSWControl13);
+  //--------模拟
+  //灯光
+  esp8266_server.on("/agswcontrol01", AGSWControl01);
+  //舵机
   esp8266_server.on("/agswcontrol11", AGSWControl11);
   //404 NOT FOUND
-  esp8266_server.onNotFound(handleUserRequest); // 处理其它网络资源请求
+  esp8266_server.onNotFound(handleUserRequest);        // 处理其它网络资源请求
 }
 
 //处理简单控制
 //---------------------------------------------------------------------
+//host
 void SPSWControl01() {
   String name = esp8266_server.arg("name");
   String hardwareId = esp8266_server.arg("hardwareId");
@@ -385,7 +396,7 @@ void SPSWControl01() {
   url.urlcode = mes;
   url.urldecode();
 
-  ledShow(url.strcode);
+  oledShow(url.strcode);
   //  配置端口
   int port = hardwarePort.toInt();
   pinMode(port, OUTPUT);
@@ -393,20 +404,42 @@ void SPSWControl01() {
   if (instruction == "open") {
     digitalWrite(port, 1);
     if (digitalRead(port)) {
-      ledShow("打开");
+      oledShow("打开");
     }
   } else {
     digitalWrite(port, 0);
     if (!digitalRead(port)) {
-      ledShow("关闭");
+      oledShow("关闭");
     }
   }
 }
-void SPSWControl11() {
-
+//slave1 继电器
+void SPSWControl02() {
+  String jsonStr = esp8266_server.arg("jsonData");
+  const char* aa = jsonStr.c_str();
+  sendBack(aa, 1);
+}
+//slave1 步进电机
+void SPSWControl12() {
+  String jsonStr = esp8266_server.arg("jsonData");
+  const char* bb = jsonStr.c_str();
+  sendBack(bb, 1);
+}
+//slave2 继电器
+void SPSWControl03() {
+  String jsonStr = esp8266_server.arg("jsonData");
+  const char* aa = jsonStr.c_str();
+  sendBack(aa, 2);
+}
+//slave2 步进电机
+void SPSWControl13() {
+  String jsonStr = esp8266_server.arg("jsonData");
+  const char* aa = jsonStr.c_str();
+  sendBack(aa, 2);
 }
 //处理模拟控制
 //---------------------------------------------------------------------
+//灯光控制
 void AGSWControl01() {
   //  String name = esp8266_server.arg("name");
   //  String hardwareId = esp8266_server.arg("hardwareId");
@@ -430,19 +463,24 @@ void AGSWControl01() {
     analogWrite(port, pwmVal);         // 实现PWM引脚设置
   } else if (instruction == "open") {
     digitalWrite(port, 0);
-    ledShow(mes + "灯已打开");
+    oledShow(mes + "灯已打开");
   } else if (instruction == "close") {
     digitalWrite(port, 1);
-    ledShow(mes + "灯已关闭");
+    oledShow(mes + "灯已关闭");
   }
   esp8266_server.send(200, "text/plain", "success"); //发送网页
 }
+//舵机控制
 void AGSWControl11() {
   String hardwarePort = esp8266_server.arg("hardwarePort");
   String instruction = esp8266_server.arg("instruction");
   String mes = esp8266_server.arg("message");
   //  配置端口
   int port = hardwarePort.toInt();
+  Serial.print("port:");
+  Serial.println(port);
+  Serial.print("ins:");
+  Serial.println(instruction);
   //舵机
   if (instruction == "pwm") {
     String pwm = esp8266_server.arg("pwm");
@@ -455,14 +493,14 @@ void AGSWControl11() {
       myservo2.write(pwmVal);
     }
   } else if (instruction == "open") {
-    ledShow("窗户已打开");
+    oledShow("窗户已打开");
     if (port == 14) {
       myservo.write(180);
     } else if (port == 13) {
       myservo2.write(0);
     }
   } else if (instruction == "close") {
-    ledShow("窗户已关闭");
+    oledShow("窗户已关闭");
     if (port == 14) {
       myservo.write(60);
     } else if (port == 13) {
@@ -470,63 +508,6 @@ void AGSWControl11() {
     }
   }
   esp8266_server.send(200, "text/plain", "success"); //发送网页
-}
-//处理风扇函数
-//---------------------------------------------------------------------
-void fanHandle() {
-  String fan_state = esp8266_server.arg("handle");
-  if (fan_state == "on") {
-    sendBack("FAN_ON", 1);
-    ledShow("FAN_ON");
-    esp8266_server.send(200, "text/plain");
-  } else if (fan_state == "off") {
-    sendBack("FAN_OFF", 1);
-    ledShow("FAN_OFF");
-    esp8266_server.send(200, "text/plain");
-  }
-}
-//处理加湿器函数
-//---------------------------------------------------------------------
-void wetHandle() {
-  String fan_state = esp8266_server.arg("handle");
-  if (fan_state == "on") {
-    sendBack("WET_ON", 1);
-    ledShow("WET_ON");
-    esp8266_server.send(200, "text/plain");
-  } else if (fan_state == "off") {
-    sendBack("WET_OFF", 1);
-    ledShow("WET_OFF");
-    esp8266_server.send(200, "text/plain");
-  }
-}
-//处理加湿器函数
-//---------------------------------------------------------------------
-void curtainHandle() {
-  String cur_state = esp8266_server.arg("handle");
-  if (cur_state == "on") {
-    sendBack("CUR_ON", 1);
-    ledShow("CUR_ON");
-    esp8266_server.send(200, "text/plain");
-  } else if (cur_state == "off") {
-    sendBack("CUR_OFF", 1);
-    ledShow("CUR_OFF");
-    esp8266_server.send(200, "text/plain");
-  }
-}
-//处理门函数
-//---------------------------------------------------------------------
-void doorHandle() {
-  String door_state = esp8266_server.arg("handle");
-  if (door_state == "on") {
-    sendBack("DOOR_ON", 2);
-    ledShow("DOOR_ON");
-    esp8266_server.send(200, "text/plain");
-    Serial.println("IdSuc");
-  } else if (door_state == "off") {
-    sendBack("DOOR_OFF", 2);
-    ledShow("DOOR_OFF");
-    esp8266_server.send(200, "text/plain");
-  }
 }
 //温湿度模块
 //---------------------------------------------------------------------
