@@ -2,6 +2,7 @@ package com.colorful.controller;
 
 import com.alibaba.druid.support.json.JSONParser;
 import com.colorful.domain.User;
+import com.colorful.domain.UserChange;
 import com.colorful.service.UserService;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,22 +51,22 @@ public class UserController {
     }
 
     @PostMapping("/{method}")
-    public Result changeUser(@PathVariable Integer method, String value, String name) {
+    public Result changeUser(@PathVariable Integer method, @RequestBody UserChange value) {
 //        System.out.println(method + "--" + value + "--" + name);
         if (method == 1) {
-            System.out.println(method + "--" +value + "--" + name);
-            int mana = Integer.parseInt(value);
-            boolean flag = service.changeMana((byte) mana, name);
+            System.out.println(method + "--" +value + "--" + value.getName());
+            int mana = Integer.parseInt(value.getValue());
+            boolean flag = service.changeMana((byte) mana, value.getName());
             return new Result(flag ? Code.PUT_OK : Code.PUT_ERR, flag);
         } else if (method == 2) {
-            int status = Integer.parseInt(value);
-            boolean flag = service.changeStatus((byte) status, name);
+            int status = Integer.parseInt(value.getValue());
+            boolean flag = service.changeStatus((byte) status, value.getName());
             return new Result(flag ? Code.PUT_OK : Code.PUT_ERR, flag);
         } else if (method == 3) {
-            boolean flag = service.changeName(value, name);
+            boolean flag = service.changeName(value.getValue(), value.getName());
             return new Result(flag ? Code.PUT_OK : Code.PUT_ERR, flag);
         } else if (method == 4) {
-            boolean flag = service.changePassword(value, name);
+            boolean flag = service.changePassword(value.getValue(), value.getName());
             return new Result(flag ? Code.PUT_OK : Code.PUT_ERR, flag);
         }else {
             return new Result(Code.PUT_ERR, false, "修改失败");

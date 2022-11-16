@@ -13,6 +13,7 @@ com\colorful\controller\HardwareController.class
 com\colorful\domain\User.class
 com\colorful\service\impl\UserServiceImpl.class
 com\colorful\config\JdbcConfig.class
+com\colorful\domain\UserChange.class
 com\colorful\domain\Hardware.class
 com\colorful\config\ServletConfig.class
 com\colorful\service\UserService.class
