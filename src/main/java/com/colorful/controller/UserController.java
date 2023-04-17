@@ -19,12 +19,12 @@ import java.util.List;
 
 @Controller
 @ResponseBody
-@RequestMapping("/users")
+@RequestMapping("/users") // users 应用
 public class UserController {
-
+    // 自动装配持久层对象
     @Autowired
     private UserService service;
-
+    // 用户登录验证
     @PostMapping("/login")
     public Result userVerify(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws IOException {
         if (service.userVerify(user.getName(), user.getPassword()) != null) {
@@ -34,22 +34,22 @@ public class UserController {
             return new Result(Code.GET_ERR, null, "验证失败");
         }
     }
-
+    // 用户注册（添加用户）
     @PostMapping("/register")
     public Result addUser(@RequestBody User user) {
         return new Result(service.addUser(user.getName(), user.getPassword()) ? Code.POST_OK : Code.POST_ERR, null, "注册成功");
     }
-
+    // 获取所有用户列表
     @GetMapping
     public Result selectAll() {
         return new Result(Code.GET_OK, service.selectAll());
     }
-
+    // 根据 name 获取用户
     @GetMapping("/{name}")
     public Result selectByName(@PathVariable String name) {
         return new Result(service.selectByName(name) != null ? Code.GET_OK : Code.GET_ERR, null);
     }
-
+    // 修改用户
     @PostMapping("/{method}")
     public Result changeUser(@PathVariable Integer method, @RequestBody UserChange value) {
 //        System.out.println(method + "--" + value + "--" + name);
@@ -72,7 +72,7 @@ public class UserController {
             return new Result(Code.PUT_ERR, false, "修改失败");
         }
     }
-
+    // 根据 id 删除用户
     @DeleteMapping("/{id}")
     public Result delById(@PathVariable Integer id) {
         boolean flag = service.deleteById(id);

@@ -1,0 +1,12 @@
+127.0.0.1 - - [27/Oct/2022:08:21:50 +0800] "GET /users HTTP/1.1" 200 382 http-bio-80-exec-7 205
+127.0.0.1 - - [27/Oct/2022:08:21:51 +0800] "GET /hardwares HTTP/1.1" 200 680 http-bio-80-exec-1 5
+127.0.0.1 - - [27/Oct/2022:08:21:54 +0800] "GET /hardwares HTTP/1.1" 200 680 http-bio-80-exec-3 4
+127.0.0.1 - - [27/Oct/2022:08:21:55 +0800] "GET /users HTTP/1.1" 200 382 http-bio-80-exec-8 5
+127.0.0.1 - - [27/Oct/2022:08:21:56 +0800] "GET /users HTTP/1.1" 200 382 http-bio-80-exec-6 4
+127.0.0.1 - - [27/Oct/2022:08:21:56 +0800] "GET /hardwares HTTP/1.1" 200 680 http-bio-80-exec-2 5
+127.0.0.1 - - [27/Oct/2022:10:04:11 +0800] "GET /users HTTP/1.1" 200 382 http-bio-80-exec-5 61
+127.0.0.1 - - [27/Oct/2022:10:04:11 +0800] "GET /hardwares HTTP/1.1" 200 680 http-bio-80-exec-9 61
+127.0.0.1 - - [27/Oct/2022:10:04:13 +0800] "GET /hardwares HTTP/1.1" 200 680 http-bio-80-exec-4 5
+127.0.0.1 - - [27/Oct/2022:10:04:18 +0800] "GET /hardwares HTTP/1.1" 200 680 http-bio-80-exec-7 6
+127.0.0.1 - - [27/Oct/2022:10:04:18 +0800] "GET /users HTTP/1.1" 200 382 http-bio-80-exec-10 7
+127.0.0.1 - - [27/Oct/2022:10:04:19 +0800] "GET /hardwares HTTP/1.1" 200 680 http-bio-80-exec-1 5

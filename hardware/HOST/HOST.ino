@@ -131,6 +131,9 @@ void loop(void) {
   client.loop();//持续运行MQTT运行函数，完成接收数据和定时发送心跳包
   esp8266_server.handleClient();
   dnsServer.processNextRequest();//处理DNS请求服务
+  const char* bb = "sdfsdfsdsdf";
+  sendBack(bb, 1);
+  sendBack(bb, 2);
   //  oledShow();
   //  huTemp();
   //  readHT();
@@ -165,6 +168,7 @@ void udpBegin() {
 //---------------------------------------------------------------------
 void wifiInit() {
   //  wifiMulti.addAP("lnettwo", "lhl15352319937"); // 将需要连接的一系列WiFi ID和密码输入这里
+  wifiMulti.addAP("Tengda2.4G", "qwert123.");
   wifiMulti.addAP("ChinaNet-LLL", "shvemHKU");
   wifiMulti.addAP("lnet", "qiaokl123");
   wifiMulti.addAP("305-2.4G", "shiyanshi305");
@@ -185,6 +189,8 @@ void wifiInit() {
   Serial.println(WiFi.SSID());              // 通过串口监视器输出连接的WiFi名称
   Serial.print("IP address:\t");
   Serial.println(WiFi.localIP());           // 通过串口监视器输出ESP8266-NodeMCU的IP
+  String aa = WiFi.localIP().toString().c_str();
+  oledShow(aa);
 }
 void AP_init() {
   IPAddress softLocal(192, 168, 3, 6);        //IP地址，用以设置IP第4字段
