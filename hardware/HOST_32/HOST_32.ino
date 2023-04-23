@@ -95,7 +95,7 @@ void setup() {
   //UDP初始化
   // udpInit();
   if(Udp.begin(localUdp))
-  Serial.println("udpppppppppp ssssu");
+  Serial.println("udp begin!");
   // AP 初始化
    AP_init();
   // 文件系统初始化
@@ -111,15 +111,13 @@ void setup() {
 }
 
 void loop() {
+  client.loop();//持续运行MQTT运行函数，完成接收数据和定时发送心跳包
   if (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("WiFi not connected!");
     delay(1000);
   }
   server.handleClient();
   delay(2);  //allow the cpu to switch to other tasks
-  // const char* bb = "sdfsdfsdsdf";
-  // sendBack(bb, 1);
-  // sendBack(bb, 2);
 }
 
 // 硬件初始化
@@ -244,7 +242,7 @@ void serverRequest() {
   // 灯光
   server.on("/agswcontrol01", AGSWControl01);
   // 舵机云台
-  server.on("/num", analogControl);
+  server.on("/agswcontrol11", AGSWControl11);
   server.onNotFound(handleUserRequest);
 }
 //处理简单控制
@@ -322,32 +320,58 @@ void AGSWControl01() {
   if (instruction == "pwm") {
     String pwm = server.arg("pwm");
     int pwmVal = pwm.toInt();                      // 将用户请求中的PWM数值转换为整数
-    pwmVal = 1023 - map(pwmVal, 0, 100, 0, 1023);  // 用户请求数值为0-100，转为0-1023
     Serial.print("pwmVal : ");
     Serial.println(pwmVal);
+    // pwmVal = map(pwmVal, 0, 100, 0, 1023);  // 用户请求数值为0-100，转为0-1023
+    // Serial.print("pwmVal---map : ");
+    // Serial.println(pwmVal);
     analogWrite(port, pwmVal);  // 实现PWM引脚设置
   } else if (instruction == "open") {
-    digitalWrite(port, 0);
+    analogWrite(port, 100);
     oledShow(mes + "灯已打开");
   } else if (instruction == "close") {
-    digitalWrite(port, 1);
+    analogWrite(port, 0);
     oledShow(mes + "灯已关闭");
   }
   server.send(200, "text/plain", "success");  //发送网页
 }
 
 // 舵机云台控制
-void analogControl() {
-  String alpha = server.arg("alpha");
-  String beta = server.arg("beta");
-  int y = abs(alpha.toInt());
-  int x = abs(beta.toInt());
-  myservo.write(x);
-  myservo1.write(180 - y);
-  Serial.println("alpha:");
-  Serial.println(x);
-  Serial.println("beta:");
-  Serial.println(y);
+void AGSWControl11() {
+  String hardwarePort = server.arg("hardwarePort");
+  String instruction = server.arg("instruction");
+  String mes = server.arg("message");
+  //  配置端口
+  int port = hardwarePort.toInt();
+  // myservo.attach(port);
+  // myservo.write(pwmVal);
+  if (instruction == "pwm") {
+    String pwm = server.arg("pwm");
+    int pwmVal = abs(pwm.toInt());
+    pwmVal = map(pwmVal, 0, 100, 0, 180);
+    if(port == 19) {
+      myservo.write(pwmVal);
+    }else {
+      myservo1.write(pwmVal);
+    }
+    // myservo1.write(180 - y);
+    oledShow(mes + "模拟控制舵机");
+  } else if (instruction == "open") {
+    if(port == 19) {
+      myservo.write(90);
+    }else {
+      myservo1.write(90);
+    }
+    oledShow(mes + "舵机正常");
+  } else if (instruction == "close") {
+    if(port == 19) {
+      myservo.write(180);
+    }else {
+      myservo1.write(180);
+    }
+    oledShow(mes + "舵机正常");
+  }
+  server.send(200, "text/plain", "success");  //发送网页
 }
 //MQTT部分开始
 //-------------------------------------------------------------------------
@@ -394,9 +418,9 @@ void MQTT_Handler(String data)  //数据处理函数，执行对接收数据的�
     return;
   }
   if (data == "on") {
-    //    digitalWrite(LED, 0);
+    digitalWrite(2, 1);
   } else if (data == "off") {
-    //    digitalWrite(LED, 1);
+    digitalWrite(2, 0);
   }
 }
 //MQTT部分结束
