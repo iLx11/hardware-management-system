@@ -10,6 +10,7 @@
 #include <DHT.h>  //加载温湿度库
 #include <DNSServer.h>
 #include <PubSubClient.h>
+#include <String.h>
 // #include "AsyncUDP.h"
 
 #include <WiFiUdp.h>
@@ -43,7 +44,7 @@ WebServer server(80);
 Servo myservo;
 Servo myservo1;
 //温湿度定义
-#define DHTPIN 0       // what digital pin we're connected to
+#define DHTPIN 32      // what digital pin we're connected to
 #define DHTTYPE DHT11  // DHT 11
 DHT dht(DHTPIN, DHTTYPE);
 //DNS对象定义
@@ -57,6 +58,8 @@ const char* ESP8266_user = "75ee4e39450943889";               //用户名
 const char* ESP8266_password = "wulianwang";                  //密码
 const char* ESP8266_pub = "banzi002";                         //发送主题（对方的订阅主题）
 const char* ESP8266_sub = "banzi002";                         //订阅主题（对方的发送主题）
+const char* fan_sub = "fan002";
+const char* ht_sub_pub = "ht004";
 WiFiClient espClient;
 PubSubClient client(espClient);  //定义客户端对象
 //UDP定义
@@ -89,15 +92,15 @@ void setup() {
   //硬件初始化
   hardwareInit();
   //温湿度初始化
-  // dht.begin();
+  dht.begin();
   // WIFI 初始化
   wifiInitList();
   //UDP初始化
   // udpInit();
-  if(Udp.begin(localUdp))
-  Serial.println("udp begin!");
+  if (Udp.begin(localUdp))
+    Serial.println("udp begin!");
   // AP 初始化
-   AP_init();
+  AP_init();
   // 文件系统初始化
   // fsInit();
   // oled 初始化
@@ -107,11 +110,11 @@ void setup() {
   //初始化MQTT客户端
   initMQTT();
   //连接到指定MQTT服务器，并订阅指定主题
-  gotoMQTT();
+  MQTTConnect();
 }
 
 void loop() {
-  client.loop();//持续运行MQTT运行函数，完成接收数据和定时发送心跳包
+  client.loop();  //持续运行MQTT运行函数，完成接收数据和定时发送心跳包
   if (wifiMulti.run() != WL_CONNECTED) {
     Serial.println("WiFi not connected!");
     delay(1000);
@@ -157,20 +160,20 @@ void wifiInitList() {
 }
 
 //AP 模式初始化
- void AP_init() {
-   IPAddress softLocal(192, 168, 3, 6);    //IP地址，用以设置IP第4字段
-   IPAddress softGateway(192, 168, 3, 6);  //IP网关，用以设置IP第3字段
-   IPAddress softSubnet(255, 255, 255, 0);
+void AP_init() {
+  IPAddress softLocal(192, 168, 3, 6);    //IP地址，用以设置IP第4字段
+  IPAddress softGateway(192, 168, 3, 6);  //IP网关，用以设置IP第3字段
+  IPAddress softSubnet(255, 255, 255, 0);
 
-   WiFi.mode(WIFI_AP_STA);  //设置为AP模式(热点)
-   WiFi.softAPConfig(softLocal, softGateway, softSubnet);
-   WiFi.softAP(ssid, password);
-   //    IPAddress myIP = WiFi.soft APIP();
-   IPAddress myIP = WiFi.softAPIP();  //用变量myIP接收AP当前的IP地址
-   Serial.println(myIP);              //打印输出myIP的IP地址
-   //DNS服务器解析地址
-   //  dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
-   // dnsServer.start(DNS_PORT, "www.me.com", softLocal);
+  WiFi.mode(WIFI_AP_STA);  //设置为AP模式(热点)
+  WiFi.softAPConfig(softLocal, softGateway, softSubnet);
+  WiFi.softAP(ssid, password);
+  //    IPAddress myIP = WiFi.soft APIP();
+  IPAddress myIP = WiFi.softAPIP();  //用变量myIP接收AP当前的IP地址
+  Serial.println(myIP);              //打印输出myIP的IP地址
+                                     //DNS服务器解析地址
+                                     //  dnsServer.setErrorReplyCode(DNSReplyCode::ServerFailure);
+                                     // dnsServer.start(DNS_PORT, "www.me.com", softLocal);
 }
 
 // UDP 初始化函数
@@ -243,6 +246,10 @@ void serverRequest() {
   server.on("/agswcontrol01", AGSWControl01);
   // 舵机云台
   server.on("/agswcontrol11", AGSWControl11);
+  // 陀螺仪控制
+  server.on("/gyrocopecontrol", gyrocopeControl);
+  // 传感器数据
+  server.on("/htData", htDataTrans);
   server.onNotFound(handleUserRequest);
 }
 //处理简单控制
@@ -319,7 +326,7 @@ void AGSWControl01() {
   pinMode(port, OUTPUT);
   if (instruction == "pwm") {
     String pwm = server.arg("pwm");
-    int pwmVal = pwm.toInt();                      // 将用户请求中的PWM数值转换为整数
+    int pwmVal = pwm.toInt();  // 将用户请求中的PWM数值转换为整数
     Serial.print("pwmVal : ");
     Serial.println(pwmVal);
     // pwmVal = map(pwmVal, 0, 100, 0, 1023);  // 用户请求数值为0-100，转为0-1023
@@ -349,30 +356,51 @@ void AGSWControl11() {
     String pwm = server.arg("pwm");
     int pwmVal = abs(pwm.toInt());
     pwmVal = map(pwmVal, 0, 100, 0, 180);
-    if(port == 19) {
+    if (port == 19) {
       myservo.write(pwmVal);
-    }else {
+    } else {
       myservo1.write(pwmVal);
     }
     // myservo1.write(180 - y);
     oledShow(mes + "模拟控制舵机");
   } else if (instruction == "open") {
-    if(port == 19) {
+    if (port == 19) {
       myservo.write(90);
-    }else {
+    } else {
       myservo1.write(90);
     }
     oledShow(mes + "舵机正常");
   } else if (instruction == "close") {
-    if(port == 19) {
+    if (port == 19) {
       myservo.write(180);
-    }else {
+    } else {
       myservo1.write(180);
     }
     oledShow(mes + "舵机正常");
   }
   server.send(200, "text/plain", "success");  //发送网页
 }
+// 陀螺仪控制
+void gyrocopeControl() {
+  String alpha = server.arg("alpha");
+  String beta = server.arg("beta");
+  int y = abs(alpha.toInt());
+  int x = abs(beta.toInt());
+  myservo1.write(x);
+  myservo.write(180 - y);
+}
+// 传感器传输
+void htDataTrans() {
+  huTemp();
+  String temp = "";
+  temp += '#';
+  temp += (int)t;
+  temp += '#';
+  temp += (int)h;
+  const char* aa = temp.c_str();
+  client.publish(ht_sub_pub, aa);
+}
+
 //MQTT部分开始
 //-------------------------------------------------------------------------
 void initMQTT()  //初始化MQTT设置
@@ -382,7 +410,7 @@ void initMQTT()  //初始化MQTT设置
   //绑定数据回调函数
   client.setCallback(callback);
 }
-void gotoMQTT()  //连接MQTT服务器
+void MQTTConnect()  //连接MQTT服务器
 {
   //用while循环执行到连接MQTT成功
   while (!client.connected()) {
@@ -398,9 +426,12 @@ void gotoMQTT()  //连接MQTT服务器
     }
   }
   client.subscribe(ESP8266_sub, 1);  //添加订阅
+  client.subscribe(fan_sub, 1);
+  client.subscribe(ht_sub_pub, 1);
+  // client.publish(ESP8266_pub, "asdfasdf");
 }
-void callback(char* topic, byte* payload, unsigned int length)  //数据回调函数，监听数据接收
-{
+// 数据回调函数，监听数据接收
+void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("消息来自订阅主题: ");
   Serial.println(topic);
   Serial.print("消息:");
@@ -410,17 +441,36 @@ void callback(char* topic, byte* payload, unsigned int length)  //数据回调�
   }
   Serial.println(data);
   Serial.println();
-  MQTT_Handler(data);  //把接收的数据，传入处理函数执行分析处理
+  MQTT_Handler(topic, data, length);  //把接收的数据，传入处理函数执行分析处理
 }
-void MQTT_Handler(String data)  //数据处理函数，执行对接收数据的分析处理
-{
-  if (data == "") {
-    return;
-  }
-  if (data == "on") {
-    digitalWrite(2, 1);
-  } else if (data == "off") {
-    digitalWrite(2, 0);
+// 数据处理函数，执行对接收数据的分析处理
+void MQTT_Handler(String topic, String data, int length) {
+  if (topic == "banzi002") {
+    if (data == "") {
+      return;
+    }
+    if (data == "on") {
+      analogWrite(2, 100);
+    } else if (data == "off") {
+      analogWrite(2, 0);
+    } else {
+      Serial.println("MQTTelse");
+      String temp;
+      for (int i = 0; i < length; i++) {
+        if (data[i] == '#') {
+          i++;
+          for (; i < length; i++) {
+            temp += data[i];
+          }
+        }
+      }
+      Serial.println(temp);
+      int banziVal = temp.toInt();
+      analogWrite(2, banziVal);
+    }
+  } else if (topic == "fan002") {
+    const char* aa = "{hardwarePort: 15, instruction: 'open', num: 'relay'}";
+    sendBack(aa, 1);
   }
 }
 //MQTT部分结束
@@ -451,7 +501,6 @@ void readHT() {
   Serial.println("%");
   Serial.print("温度：");
   Serial.println(t);
-  Serial.println("_____________________________________________");
   delay(800);
 }
 //传送温湿度数据
